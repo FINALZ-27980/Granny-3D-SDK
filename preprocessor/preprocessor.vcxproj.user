@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LocalDebuggerCommandArguments>WayForwardMode C:/wayforward/Smurfs/code/resources/Level3_Props/!wii/Apple_Green.gr2 -output C:\wayforward\Smurfs\code\WII\paksource\Level3_Props\Apple_Green.gr2 -p WII -t C:\wayforward\Smurfs\code\resources\types.xml -r C:\wayforward\Smurfs\code\resources\resources.xml -texture default -animfolder !Apple_anims</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerCommand>C:\wayforward\Smurfs\code\3rdparty\granny\bin\win32\preprocessor.exe</LocalDebuggerCommand>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LocalDebuggerCommandArguments>WayForwardMode C:/WayForward/ducktales/resources/transylvania_env/tr_dungeon_wall.gr2 -output C:\WayForward\ducktales\PS3\paksource\transylvania_env\tr_dungeon_wall.gr2 -p PS3 -t C:\WayForward\ducktales\resources\types.xml -r C:\WayForward\ducktales\resources\resources.xml -rotate false -texture default </LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerCommand>
+    </LocalDebuggerCommand>
+  </PropertyGroup>
+</Project>

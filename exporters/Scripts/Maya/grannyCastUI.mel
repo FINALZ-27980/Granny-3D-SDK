@@ -1,0 +1,592 @@
+/*
+    <help>\tGrannyCastUI ()
+    <help>
+    <help>opens dialog box with the granny casting GUI.
+    <help>executes a casts or prints a macro-able command string;
+    by: theo 4/6/2004
+    version 0.91
+
+    0.91:       simplifed callbacks; changed default values for UVN multipliers;
+    0.92:       fixed bug in ceiling/floor setup. Also fixed mistaken generation of extensions
+
+    insert existential protest against the lameness of mel syntax here.
+*/
+
+
+/*----------------------------------------------------------------------------------------
+  Utility functions and callbacks
+  --------------------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------------------
+  update the u- and v- size controls
+  --------------------------------------------------------------------------------------*/
+
+proc int ceilPow2(int $num)
+{
+    int $pow2 = 1;
+
+    while ($pow2 < $num)
+    {
+        $pow2 = $pow2 * 2;
+    }
+    return $pow2;
+}
+
+// global : it gets called as a callback;
+global proc gcUpdatePixels (string $ctrl)
+{
+    int $correct = `intFieldGrp -q -v1 $ctrl`;
+    if (`optionVar - q grannyCast_forceTwo`) $correct = `ceilPow2 $correct`;
+    intFieldGrp -e -v1 $correct $ctrl;
+    optionVar -iv (`substitute "gc_" $ctrl "grannyCast_" `)  $correct;
+    if (`optionVar -q grannyCast_forceSquare` && $ctrl == "gc_uPixels")
+    {
+        intFieldGrp -e -v1 $correct gc_vPixels;
+        optionVar -iv grannyCast_vPixels $correct;
+    }
+}
+
+
+/*-----------------------------------------------------------------------------------------------------------------------------------------------
+List updates
+-----------------------------------------------------------------------------------------------------------------------------------------------*/
+// add selected objects to the source or target lists
+proc gcInitializeList (string $listObj)
+{
+
+    string $oVar;
+    if ($listObj == "gcSrcList")
+    {
+        $oVar = "grannyCast_fromMeshArray";
+    }
+    else
+    {
+        $oVar = "grannyCast_toMeshArray";
+    }
+    string $list[] = `optionVar -q $oVar`;
+    string $item;
+    for ($item in $list)
+    {
+        textScrollList -e -append $item $listObj;
+    }
+}
+
+// global : it gets called as a callback;
+global proc gcAddToList (string $listObj)
+{
+
+    string $selection[] = `ls -sl `;
+    string $item;
+    string $existingList[] = `textScrollList -q -allItems $listObj`;
+    string $otherList;
+    string $oVar;
+    if ($listObj == "gcSrcList")
+    {
+        $otherList = "gcTgtList" ;
+        $oVar = "grannyCast_fromMeshArray";
+    }
+    else
+    {
+        $oVar = "grannyCast_toMeshArray";
+        $otherList = "gcSrcList";
+    }
+    string $otherItems[] = `textScrollList -q -allItems $otherList`;
+    stringArrayIntersector gcListCompare;
+    stringArrayIntersector -e -i $otherItems gcListCompare;
+
+    for ($item in $selection)
+    {
+        stringArrayIntersector -e -i {$item} gcListCompare;
+        string $pointlessWorkaround[] = `stringArrayIntersector -q gcListCompare` ;
+        if (`size $pointlessWorkaround`)
+        {
+            warning ("object " + $item + " is already assigned.");
+            stringArrayIntersector  -e -reset gcListCompare;
+            stringArrayIntersector -e -i $otherItems gcListCompare;
+        }
+        else
+        {
+            string $shapes[] = `listRelatives -c -type mesh $item` ;
+            if ( `size $shapes`)
+            {
+                $existingList[`size $existingList`] = $item;
+            }
+        }
+    }
+
+    $existingList = `stringArrayRemoveDuplicates $existingList`;
+    $existingList = `sort $existingList`;
+    optionVar -ca $oVar;
+    textScrollList -e -ra $listObj;
+    for ($item in $existingList )
+    {
+        textScrollList -e -append $item $listObj;
+        optionVar -sva $oVar $item;
+    }
+    deleteUI gcListCompare;
+}
+
+// remove items from the lists
+// global : it gets called as a callback;
+global proc gcRemoveFromList (string $listObj)
+{
+    string $oVar;
+    if ($listObj == "gcSrcList")
+        $oVar = "grannyCast_fromMeshArray";
+    else
+        $oVar = "grannyCast_toMeshArray";
+
+    int $index[] = `textScrollList -q -sii $listObj`;
+    if (`size $index`)
+    {
+        int $item;
+        for ($item in $index)
+        {
+            optionVar -rfa $oVar ($item -1 );
+            textScrollList -e -rii  $item $listObj;
+        }
+    }
+}
+
+// select objects in a list
+global proc gcSelectListed (string $listObj)
+{
+    string $selected[] = `textScrollList -q -si $listObj`;
+    if (! `size $selected`)
+    {
+        $selected = `textScrollList -q -ai $listObj`;
+        string $item;
+        for ($item in $selected )
+        {
+            textScrollList -e-si $item $listObj;
+        }
+    }
+
+    select $selected;
+}
+
+/*----------------------------------------------------------------------------------------
+  Main grannyCastUI function
+----------------------------------------------------------------------------------------*/
+
+global proc grannyCastUI ()
+{
+    window -title "Granny Cast Options"
+        -iconName "grannyCast" -
+        sizeable false
+        -mnb false -mxb false
+        -dtg "Granny Normal Casting Options"
+        -widthHeight 480 390 grannyCastOptionsWindow;
+    formLayout gcMaster;
+
+    // the master layout that holds all the tabs
+    tabLayout -innerMarginWidth 5 -innerMarginHeight 5 gcTabs;
+
+    /*-----------------------------------------------------------------------------------
+      source  objects list
+      ---------------------------------------------------------------------------------*/
+
+    if (! `optionVar -exists "grannyCast_fromMeshArray"`)
+        optionVar -sva "grannyCast_fromMeshArray" "";
+
+    string $gcObjects = `columnLayout  -rs 12 "Objects"`;
+    columnLayout   -rs 4;
+    text  -label "Use buttons below to add and remove objects from the source list";
+    rowLayout -columnWidth2 148 300  -height 88 -numberOfColumns 2 -columnAttach2 "both"  "both" -width 468;
+    columnLayout -adjustableColumn off -columnAlign "center" -columnAttach "both" 4 -columnWidth 148 -height 88 -rowSpacing 4 -width 148;
+    button -align "center" -height 24 -label "Add to source list" -width 148 -c "gcAddToList gcSrcList";
+    button -align "center" -height 24 -label "Select in scene" -width 148 -c "gcSelectListed gcSrcList";
+    button -align "center" -height 24 -label "Remove from source list" -width 148 -c "gcRemoveFromList gcSrcList" ;
+    setParent ..;
+    columnLayout -columnAlign "center" -columnAttach "both" 4  -columnWidth 300 -height 88 -rowSpacing 4 -width 300;
+    textScrollList -height 80 -width 300
+        -ams true
+        -dkc "gcRemoveFromList gcSrcList"
+        -dcc "gcSelectListed gcSrcList"
+        gcSrcList;
+    setParent $gcObjects;
+
+    /*------------------------------------------------------------------------------------
+      target objects list
+      ----------------------------------------------------------------------------------*/
+
+    if (! `optionVar -exists "grannyCast_toMeshArray"`) optionVar -sva "grannyCast_toMeshArray" "";
+
+    separator -width 450 -style "in";
+    columnLayout -rs 4;
+    text -label "Use buttons below to add and remove objects from the target  list";
+    rowLayout -columnWidth2 148 300  -height 88 -numberOfColumns 2 -columnAttach2 "both"  "both" -width 468;
+    columnLayout -adjustableColumn off -columnAlign "center" -columnAttach "both" 4 -columnWidth 148 -height 88 -rowSpacing 4 -width 148;
+    button -align "center" -height 24 -label "Add to target list" -width 148 -c "gcAddToList gcTgtList";
+    button -align "center" -height 24 -label "Select in scene" -width 148 -c "gcSelectListed gcTgtList";
+    button -align "center" -height 24 -label "Remove from target list" -width 148 -c "gcRemoveFromList gcTgtList" ;
+    setParent ..;
+    columnLayout -columnAlign "center" -columnAttach "both" 4  -columnWidth 300 -height 88 -rowSpacing 4 -width 300;
+    textScrollList -height 80 -width 300
+        -ams true
+        -dkc "gcRemoveFromList gcTgtList"
+        -dcc "gcSelectListed gcTgtList"
+        gcTgtList;
+    setParent gcTabs;
+
+    /*------------------------------------------------------------------------------------
+      file output tab
+      ----------------------------------------------------------------------------------*/
+
+    // ----------initialize
+    if (! `optionVar -exists "grannyCast_suffix"`) optionVar -sv "grannyCast_suffix" "_grannyCast";
+    if (! `optionVar -exists "grannyCast_extension"`) optionVar -iv "grannyCast_extension" 1;
+    if (! `optionVar -exists "grannyCast_alpha"`) optionVar -iv "grannyCast_alpha" 1;
+    if (! `optionVar -exists "grannyCast_overWrite"`) optionVar -iv "grannyCast_overWrite" 1;
+    if (! `optionVar -exists "grannyCast_autoClose"`) optionVar -iv "grannyCast_autoClose" 1;
+    if (! `optionVar -exists "grannyCast_uPixels"`) optionVar -iv "grannyCast_uPixels" 512;
+    if (! `optionVar -exists "grannyCast_vPixels"`) optionVar -iv "grannyCast_vPixels" 512;
+    if (! `optionVar -exists "grannyCast_forceTwo"`) optionVar -iv "grannyCast_forceTwo" 1;
+    if (! `optionVar -exists "grannyCast_forceSquare"`) optionVar -iv "grannyCast_forceSquare" 1;
+
+    //---------------------layout
+    columnLayout -rs 8  "Output files";
+    textFieldGrp -label "cast file suffix:"
+        -text (`optionVar -q grannyCast_suffix`)
+        gc_suffix;
+    frameLayout -mh 12  -label "file format" -labelAlign "center" -borderStyle "etchedOut";
+    rowLayout -numberOfColumns 2  -ct2 "both" "both" -co2 5 5  -cw2 225 225;
+    optionMenu -label "output files as:"
+        gc_extension;
+    menuItem -label "Targa (.tga)";
+    menuItem -label "Windows bitmap (.bmp)";
+    menuItem -label "DirectX bitmap (.dds)";
+    optionMenu -e -sl (`optionVar -q grannyCast_extension`) gc_extension;
+    checkBox -label "include Alpha channels" gc_alpha;
+    checkBox -e -v (`optionVar -q grannyCast_alpha`) gc_alpha;
+    checkBox -e -en (`optionVar -q grannyCast_extension` != 2) gc_alpha;
+    setParent ..;
+    setParent ..;
+    frameLayout -mh 12  -label "texture resolution" -labelAlign "center" -borderStyle "etchedOut";
+    columnLayout -rs 4;
+    rowLayout -numberOfColumns 2  -ct2 "left" "both" -co2 16  5  -cw2 160 290;
+    columnLayout -rs 4;
+    checkBox -height 24 -label "Force power-of-two" -v (`optionVar -q grannyCast_forceTwo`)
+        gc_forceTwo;
+    checkBox -height 24 -label "Force square"  -v (`optionVar -q grannyCast_forceSquare`)
+        gc_forceSquare;
+    setParent ..;
+    columnLayout -columnAlign "right" -rs 4;
+    intFieldGrp -height 24 -label "width:" -value1  (`optionVar -q grannyCast_uPixels`) -cw2 60 60  gc_uPixels;
+    intFieldGrp -height 24 -label "height:" -value1 (`optionVar -q grannyCast_vPixels`)  -cw2 60 60 gc_vPixels;
+    setParent ..;
+    setParent ..;
+    setParent ..;
+    setParent..;
+    rowLayout -numberOfColumns 2  -ct2 "both" "both" -co2 5 5  -cw2 240  240;
+    checkBox -label "overwrite existing files without asking" -value (`optionVar -q "grannyCast_overWrite"`)
+        gc_overWrite;
+    checkBox -label "auto-close casting window" -value (`optionVar -q "grannyCast_autoClose"`)
+        -cc "optionVar - iv \"grannyCast_autoClose\" (`checkBox -q -v gc_autoClose`)"
+        gc_autoClose;
+
+    //------------------- callbacks
+    textFieldGrp -e -cc "optionVar -sv grannyCast_suffix #1" gc_suffix;
+    checkBox -e  -cc    "optionVar -iv grannyCast_forceTwo #1;  gcUpdatePixels gc_uPixels; gcUpdatePixels gc_vPixels;"  gc_forceTwo;
+    checkBox -e  -cc    "optionVar -iv grannyCast_forceSquare #1; gcUpdatePixels gc_uPixels; gcUpdatePixels gc_vPixels;" gc_forceSquare;
+    checkBox -e  -cc    "optionVar - iv grannyCast_overWrite #1"gc_overWrite;
+    checkBox -e -cc     "optionVar - iv grannyCast_autoClose #1" gc_autoClose;
+    intFieldGrp -e -cc  "gcUpdatePixels gc_vPixels" gc_vPixels;
+    intFieldGrp -e -cc  "gcUpdatePixels gc_uPixels"  gc_uPixels;
+    checkBox -e -cc     "optionVar -iv grannyCast_alpha #1"  gc_alpha;
+
+    string $extensionChange = "{\n\tint $L = `optionMenu -q -sl gc_extension`;\n\t";
+    $extensionChange += "optionVar -iv grannyCast_extension $L;\n\t";
+    $extensionChange += " control -e -en ($L != 2) gc_alpha;\n}" ;
+    optionMenu -e -cc $extensionChange gc_extension;
+
+    /*------------------------------------------------------------------------------------
+      normal casting options tab
+      ----------------------------------------------------------------------------------*/
+
+    // ----------initialize
+    if (! `optionVar -exists "grannyCast_outputNormals"`) optionVar -iv "grannyCast_outputNormals" 1;
+    if (! `optionVar -exists "grannyCast_bumpHeight"`) optionVar -fv "grannyCast_bumpHeight" 1.0;
+    if (! `optionVar -exists "grannyCast_mirror"`) optionVar -iv "grannyCast_mirror" 1;
+    if (! `optionVar -exists "grannyCast_mirrorPoint"`) optionVar -fv "grannyCast_mirrorPoint" 0.0;
+    if (! `optionVar -exists "grannyCast_uMult"`) optionVar -fv "grannyCast_uMult" 1.0;
+    if (! `optionVar -exists "grannyCast_vMult"`) optionVar -fv "grannyCast_vMult" 1.0;
+    if (! `optionVar -exists "grannyCast_nMult"`) optionVar -fv "grannyCast_nMult" 1.0;
+    if (! `optionVar -exists "grannyCast_tangTol"`) optionVar -fv "grannyCast_tangTol" 75.0;
+
+
+    // ----------layout
+    setParent gcTabs;
+    columnLayout  -rs 8 "Normal Casting settings";
+    rowLayout -numberOfColumns 2  -columnAlign2  "right" "left"  -ct2 "both" "left" -co2 5 5  -cw2 125 325;
+    text "output normal maps as:" ;
+    optionMenu gc_outputNormals;
+    menuItem -label "Tangent space maps";
+    menuItem -label "Object space mape";
+    menuItem -label "Bump maps";
+    optionMenu -e -sl (`optionVar -q "grannyCast_outputNormals"`) gc_outputNormals;
+    setParent ..;
+    rowLayout -numberOfColumns 2  -columnAlign2  "right" "left"  -ct2 "both" "left" -co2 5 5  -cw2 125 325;
+    text "Bump map scale:";
+    floatField -pre 2 -v (`optionVar -q "grannyCast_bumpHeight"`)
+        gc_bumpHeight;
+    setParent ..;
+
+    frameLayout -mh 12 -label "Object Space Options"
+        -labelAlign "center"
+        -borderStyle "etchedOut" gc_objectSpaceOptions;
+
+    columnLayout -cw 450 -cat "both" 0 ;
+    rowLayout
+        -numberOfColumns 4
+        -columnAlign4 "right" "left" "right" "left"
+        -ct4 "right" "left" "right" "left"
+        -co4 5 5  5 5 -cw4 125 100 75 125;
+    text "Mirroring:";
+    optionMenu gc_mirror;
+    menuItem -label "none";
+    menuItem -label "+X to -X";
+    menuItem -label "-X to +X";
+    menuItem -label "+Y to -Y";
+    menuItem -label "-Y to +Y";
+    menuItem -label "+Z to -Z";
+    menuItem -label "-Z to +Z";
+    optionMenu -e -sl (`optionVar -q "grannyCast_mirror"`) gc_mirror;
+    optionMenu -e -en (`optionVar -q grannyCast_outputNormals` == 2) gc_mirror  ;
+    text "Mirror about:";
+    floatField -width 50  -pre 3 -v (`optionVar -q "grannyCast_mirrorPoint"`)
+        -en (`optionVar -q grannyCast_outputNormals` == 2)
+        gc_mirrorPoint;
+    setParent ..;
+    setParent ..;
+    setParent ..;
+    frameLayout -mh 12 -label "Tangent Space Orientation" -labelAlign "center" -borderStyle "etchedOut" gc_tangentSpaceOptions;
+    rowLayout -numberOfColumns 3 -cw3  100 150  200 -columnAlign3 "right" "left" "left" -columnAttach3 "right" "both" "both"  -co3 5 5 5 ;
+    text " ";
+    columnLayout -bgc 1 1 1 ;
+    floatFieldGrp -label "U:" -cw2 100 50   -v1 (`optionVar -q "grannyCast_uMult"`)
+        -en (`optionVar -q grannyCast_outputNormals` == 1) gc_uMult;
+    floatFieldGrp -label "V:" -cw2 100 50   -v1 (`optionVar -q "grannyCast_vMult"`)
+        -en (`optionVar -q grannyCast_outputNormals` == 1) gc_vMult;
+    floatFieldGrp -label "N:" -cw2 100 50   -v1 (`optionVar -q "grannyCast_nMult"`)
+        -en (`optionVar -q grannyCast_outputNormals` == 1) gc_nMult;
+    floatFieldGrp -label "Merge Tolerance:" -cw2 100 50   -v1 (`optionVar -q "grannyCast_tangTol"`)
+        -en (`optionVar -q grannyCast_outputNormals` == 1) gc_tangTol;
+    setParent ..;
+    text " ";
+    setParent ..;
+
+    //------- callbacks
+    string $castTypeChange = "{\n\tint $L =  `optionMenu -q -sl gc_outputNormals`; \n\t" ;
+    $castTypeChange += "optionVar -iv grannyCast_outputNormals $L;\n\t" ;
+    $castTypeChange += "control -e -en ($L ==2)  gc_mirror;\n\t" ;
+    $castTypeChange += "control-e -en ($L == 2)  gc_mirrorPoint;\n\t" ;
+    $castTypeChange += "control -e -en ($L ==1)  gc_uMult;\n\t" ;
+    $castTypeChange += "control -e -en ($L ==1)  gc_vMult;\n\t" ;
+    $castTypeChange += "control -e -en ($L ==1)  gc_nMult;\n}\n" ;
+    $castTypeChange += "control -e -en ($L ==1)  gc_tangTol;\n}\n" ;
+    optionMenu -e -cc $castTypeChange gc_outputNormals;
+
+    optionMenu -e -cc "optionVar -iv  grannyCast_mirror (`optionMenu -q -sl gc_mirror`) " gc_mirror;
+    floatField -e -cc "optionVar -fv grannyCast_mirrorPoint #1 " gc_mirrorPoint;
+    floatField -e  -cc "optionVar -fv grannyCast_bumpHeight  #1 "gc_bumpHeight;
+    floatFieldGrp -e -cc "optionVar -fv grannyCast_uMult #1" gc_uMult;
+    floatFieldGrp -e -cc "optionVar -fv grannyCast_vMult #1" gc_vMult;
+    floatFieldGrp -e -cc "optionVar -fv grannyCast_nMult #1" gc_nMult;
+    floatFieldGrp -e -cc "optionVar -fv grannyCast_tangTol #1" gc_tangTol;
+
+    /*------------------------------------------------------------------------------------
+      Ray casting options tab
+      ----------------------------------------------------------------------------------*/
+
+    // ----------initialize
+    if (! `optionVar -exists "grannyCast_samples"`)
+        optionVar -fv "grannyCast_samples" 1;
+    if (! `optionVar -exists "grannyCast_castType"`)
+        optionVar -iv "grannyCast_castType" 1;
+    if (! `optionVar -exists "grannyCast_allowBackfaces"`)
+        optionVar -iv "grannyCast_allowBackfaces" 0;
+    if (! `optionVar -exists "grannyCast_useLimits"`)
+        optionVar -iv "grannyCast_useLimits" 0;
+    if (! `optionVar -exists "grannyCast_rayNormal"`)
+        optionVar -iv "grannyCast_rayNormal" 1;
+    if (! `optionVar -exists "grannyCast_fillUncast"`)
+        optionVar -iv "grannyCast_fillUncast" 1;
+
+    // ----------layout
+    setParent gcTabs;
+    columnLayout -rs 12  "Casting options" ;
+    rowLayout -numberOfColumns 2  -columnAlign2  "right" "left"  -ct2 "both" "left" -co2 5 5  -cw2 100 350;
+    text "Rays per texel";
+    intField -width 50  -v (`optionVar -q "grannyCast_samples"`) gc_samples;
+    setParent ..;
+    rowLayout -numberOfColumns 3  -columnAlign3  "right" "both" "left" -ct3 "right" "both" "left" -co3 5 5 15  -cw3 100 200  150;
+    text "Casting method:";
+    optionMenu gc_castType;
+    menuItem "use closest point";
+    menuItem "use closest point in front";
+    menuItem "use furthest point";
+    optionMenu -e -sl (`optionVar -q "grannyCast_castType"`) gc_castType;
+    checkBox -label "include hits on backfaces" -v (`optionVar -q grannyCast_allowBackfaces`) gc_allowBackfaces;
+    setParent ..;
+    rowLayout -numberOfColumns 5  -ct5 "right" "both" "right" "both" "left"
+        -columnAlign5 "right" "left" "right" "left" "left"
+        -cw5 100 50 100 50 150
+        -co5 5 5 5 5 15;
+    text -align "right" "min ray length:";
+    floatField -width 72 -pre 3
+        -v (`optionVar -q grannyCast_floor`)
+        -en (`optionVar -q grannyCast_useLimits`)
+        gc_floor ;
+    text -align "right" "max ray length:";
+    floatField -width 72 -pre 3
+        -v (`optionVar -q grannyCast_ceiling`)
+        -en (`optionVar -q grannyCast_useLimits`)
+        gc_ceiling ;
+    checkBox  -height 24 -label "enable limits"
+        -v (`optionVar -q grannyCast_useLimits`)
+        gc_useLimits;
+    setParent ..;
+    separator -w 450;
+    rowLayout -numberOfColumns 2  -columnAlign2  "right" "left"  -ct2 "both" "left" -co2 5 5  -cw2 150 300;
+    text "When rays find no target:" ;
+    optionMenu gc_rayNormal;
+    menuItem "use low-res model normals";
+    menuItem "Show errors with gray";
+    optionMenu -e -sl (`optionVar -q "grannyCast_rayNormal"`) gc_rayNormal;
+    setParent ..;
+    rowLayout -numberOfColumns 2  -columnAlign2  "right" "left"  -ct2 "both" "left" -co2 5 5  -cw2 150 300;
+    text "Fill uncast texels with:" ;
+    optionMenu gc_fillUncast;
+    menuItem "nearest cast color";
+    menuItem "leave empty";
+    optionMenu -e -sl (`optionVar -q "grannyCast_fillUncast"`) gc_fillUncast;
+
+    // ------------- callbacks
+    intField -e -cc     "optionVar -iv grannyCast_samples #1" gc_samples;
+    optionMenu -e -cc   "optionVar -iv \"grannyCast_castType\" (`optionMenu -q -sl gc_castType`) " gc_castType;
+    checkBox  -e -cc    "optionVar -iv grannyCast_allowBackfaces  #1" gc_allowBackfaces;
+    floatField -e -cc   "optionVar -fv grannyCast_ceiling #1" gc_ceiling;
+    floatField -e -cc   "optionVar -fv grannyCast_floor #1" gc_floor;
+    checkBox -e -cc     "{\n\tint $L = #1;\noptionVar -iv grannyCast_useLimits $L;\n\t  control -e -en $L gc_ceiling;\n\tcontrol -e -en $L gc_floor;\n}" gc_useLimits;
+    optionMenu -e -cc   "optionVar -iv grannyCast_rayNormal (`optionMenu -q -sl gc_rayNormal`) " gc_rayNormal;
+    optionMenu -e -cc   "optionVar -iv grannyCast_fillUncast (`optionMenu -q -sl gc_fillUncast`) " gc_fillUncast;
+
+
+    /*------------------------------------------------------------------------------------
+      the action buttons. Constant in all tabs
+      ----------------------------------------------------------------------------------*/
+    setParent gcMaster;
+    rowLayout
+        -numberOfColumns 3
+        -columnWidth3 150 150 150
+        -columnAlign3 "center"  "center" "center"
+        -columnAttach3 "both" "both" "both"
+        -co3 10 10 10 gcGoButtons;
+
+    button -height 32 -label "save command string"
+        -c "print `buildGrannyCastCommand`";
+    button  -height 32 -label "view help page"
+        -c "showHelp -a  \"www.radgametools.com/granny/casting.html\"";
+    button  -height 32 -label "cast with these settings"
+        -c "eval (`buildGrannyCastCommand`)";
+
+    formLayout -edit
+        -attachForm gcTabs "top" 5
+        -attachForm gcTabs "left" 0
+        -attachForm gcTabs "right" 0
+        -attachForm gcTabs "bottom" 48
+        -attachForm gcGoButtons "bottom" 5
+        -attachForm gcGoButtons "left" 0
+        -attachForm gcGoButtons "right" 0
+        gcMaster;
+    gcInitializeList "gcTgtList";
+    gcInitializeList "gcSrcList";
+    showWindow;
+}
+
+
+/*------------------------------------------------------------------------------------
+  this is the command that creates a command string from the option variables
+  the bloody minded could call this directly from the script window if they wished
+  ----------------------------------------------------------------------------------*/
+global  proc string buildGrannyCastCommand ()
+{
+    string $cmd = "GrannyCast";
+    string $t;
+
+    // source & target lists
+
+    string $sources[] = `optionVar -q "grannyCast_fromMeshArray"`;
+    if (`size $sources` == 0) error "No source objects selected";
+    for ($t in $sources)
+    {
+        $cmd += ("\n\t -fromMesh \"" + $t + "\"");
+    }
+
+    string $targets[] = `optionVar -q "grannyCast_toMeshArray"`;
+    if (`size $targets` == 0) error "No target objects selected";
+    for ($t in $targets)
+    {
+        $cmd += ("\n\t -toMesh \"" + $t + "\"");
+    }
+
+    // file options
+    $cmd += ("\n\t -suffix \"" + `optionVar -q "grannyCast_suffix"` + "\"");
+    $cmd += "\n\t -extension " ;
+    string $flags[3] = {"\"tga\"", "\"bmp\"", "\"dds\""};
+    int $option =  `optionVar -q "grannyCast_extension" ` -1 ;
+    $cmd += $flags[$option];
+    $cmd += ("\n\t -alpha " + `optionVar -q "grannyCast_alpha" `);
+    $cmd += ("\n\t -overwrite " + `optionVar -q "grannyCast_overWrite"`);
+    $cmd += ("\n\t -autoClose " + `optionVar -q "grannyCast_autoClose"`);
+    $cmd += ("\n\t -uPixels " + `optionVar -q "grannyCast_uPixels" `);
+    $cmd += ("\n\t -vPixels " + `optionVar -q "grannyCast_uPixels" `);
+
+    // normal casting
+    $cmd += " \n\t -outputFormat ";
+    string $flags[3] = {"\"tangent\"", "\"object\"", "\"bump\""};
+    int $option = `optionVar -q "grannyCast_outputNormals"` -1;
+    $cmd += $flags[$option];
+    $cmd += ("\n\t -bumpHeight " + `optionVar -q "grannyCast_bumpHeight" `);
+    $option = `optionVar -q "grannyCast_mirror"`;
+    switch ($option)
+    {
+        case 1: {break;}
+        case 2: {$cmd += ("\n\t -mirrorX " + `optionVar -q "grannyCast_mirrorPoint" `); break;}
+        case 3: {$cmd += ("\n\t -mirrorX " + `optionVar -q "grannyCast_mirrorPoint" ` + "-mirrorReverse"); break;}
+        case 4: {$cmd += ("\n\t -mirrorY " + `optionVar -q "grannyCast_mirrorPoint" `); break;}
+        case 5: {$cmd += ("\n\t -mirrorY " + `optionVar -q "grannyCast_mirrorPoint" ` + "-mirrorReverse"); break;}
+        case 6: {$cmd += ("\n\t -mirrorZ " + `optionVar -q "grannyCast_mirrorPoint" `); break;}
+        case 7: {$cmd += ("\n\t -mirrorZ " + `optionVar -q "grannyCast_mirrorPoint" ` + "-mirrorReverse"); break;}
+    }
+
+    if (`optionVar -q "grannyCast_outputNormals"` == 1)
+    {
+        $cmd += ("\n\t -uMultiplier " + `optionVar -q "grannyCast_uMult"`);
+        $cmd += (" -vMultiplier " + `optionVar -q "grannyCast_vMult"`);
+        $cmd += (" -nMultiplier " + `optionVar -q "grannyCast_nMult"`);
+        $cmd += (" -tangentMergeTolerance " + `optionVar -q "grannyCast_tangTol"`);
+    }
+
+    //casting options
+    $cmd += ("\n\t -supersampling " + `optionVar -q "grannyCast_samples" `);
+    $option = `optionVar -q "grannyCast_castType"`;
+    switch ($option)
+    {
+        case 1: {$cmd += "\n\t -useAbsoluteValue false -pickClosest true"; break;}
+        case 2: {$cmd += "\n\t -useAbsoluteValue true -pickClosest true"; break;}
+        case 3: {$cmd += "\n\t -useAbsoluteValue true -pickClosest false"; break;}
+    }
+    $cmd += ("\n\t -allowFrontFacing " + `optionVar -q "grannyCast_allowBackfaces"`);
+    if (` optionVar -q"grannyCast_useLimits" `)
+    {
+        $cmd += ("\n\t -floorDistance " + `optionVar -q "grannyCast_floor"`);
+        $cmd += (" -ceilingDistance " + `optionVar -q "grannyCast_ceiling"`);
+    }
+    $cmd += ("\n\t -fillUncastPixels " + (`optionVar -q "grannyCast_fillUncast"` == 1) );
+    $cmd += ("\n\t -useRayNormalForMisses " + (`optionVar -q "grannyCast_ rayNormal"` == 1));
+    $cmd += ("\n\t -allowFallback " + (`optionVar -q "grannyCast_ rayNormal"` == 1));
+    $cmd += ";";
+    return $cmd;
+}

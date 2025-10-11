@@ -1,0 +1,34 @@
+ global proc  installGrannyUI()
+ {
+  if (! `runTimeCommand -exists GrannyCastOptions`) 
+	{
+    	runTimeCommand
+    		-annotation "Open the Granny normal/texture casting dialog."
+		-category "Granny"
+    		-command "grannyCastUI()"
+    		GrannyCastOptions;
+	}
+
+ if (! `runTimeCommand -exists GrannyRecast`) 
+	{
+    	runTimeCommand
+    		-annotation "Execute a Granny casting operations with current options."
+		-category "Granny"
+    		-command "source grannyCastUI(); eval (`buildGrannyCastCommand()`)"
+    		GrannyRecast;
+	}
+print "GrannyCastOptions";
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+

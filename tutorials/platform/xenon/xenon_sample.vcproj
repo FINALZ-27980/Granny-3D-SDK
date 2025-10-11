@@ -1,0 +1,838 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9.00"
+	Name="xenon_sample"
+	ProjectGUID="{1371E99D-3C56-477E-8287-AAE7172EE758}"
+	RootNamespace="xenon_sample"
+	Keyword="XenonProj"
+	TargetFrameworkVersion="131072"
+	>
+	<Platforms>
+		<Platform
+			Name="Xbox 360"
+		/>
+	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
+	<Configurations>
+		<Configuration
+			Name="Debug|Xbox 360"
+			OutputDirectory="Debug"
+			IntermediateDirectory="Debug"
+			ConfigurationType="1"
+			UseOfMFC="-1"
+			UseOfATL="0"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLX360CompilerTool"
+				AdditionalOptions=""
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\include"
+				PreprocessorDefinitions="_DEBUG;_XBOX"
+				ExceptionHandling="0"
+				RuntimeLibrary="1"
+				BufferSecurityCheck="false"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=""
+				WarningLevel="3"
+				DebugInformationFormat="3"
+				CallAttributedProfiling="2"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCX360LinkerTool"
+				AdditionalDependencies="xapilibd.lib d3d9d.lib d3dx9d.lib xgraphicsd.lib xboxkrnl.lib xnetd.lib xbdm.lib vcompd.lib granny2.lib"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="..\..\..\lib\xenon"
+				IgnoreDefaultLibraryNames="xapilib"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCX360ImageTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCX360DeploymentTool"
+				DeploymentFiles="$(RemoteRoot)=$(ImagePath);$(RemoteRoot)\Media=.\Media"
+				DeploymentType="0"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+			<DebuggerTool
+			/>
+		</Configuration>
+		<Configuration
+			Name="Profile|Xbox 360"
+			OutputDirectory="Profile"
+			IntermediateDirectory="Profile"
+			ConfigurationType="1"
+			UseOfMFC="-1"
+			UseOfATL="0"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLX360CompilerTool"
+				AdditionalOptions=""
+				Optimization="3"
+				FavorSizeOrSpeed="2"
+				AdditionalIncludeDirectories="..\..\..\include"
+				PreprocessorDefinitions="NDEBUG;_XBOX;PROFILE"
+				StringPooling="true"
+				ExceptionHandling="0"
+				RuntimeLibrary="0"
+				BufferSecurityCheck="false"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=""
+				WarningLevel="3"
+				DebugInformationFormat="3"
+				CallAttributedProfiling="2"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCX360LinkerTool"
+				AdditionalDependencies="xapilibi.lib d3d9i.lib d3dx9.lib xgraphics.lib xboxkrnl.lib xnet.lib xbdm.lib vcomp.lib granny2.lib"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\..\lib\xenon"
+				IgnoreDefaultLibraryNames="xapilib.lib"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="1"
+				SetChecksum="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCX360ImageTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCX360DeploymentTool"
+				DeploymentFiles="$(RemoteRoot)=$(ImagePath);$(RemoteRoot)\Media=.\Media"
+				DeploymentType="0"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+			<DebuggerTool
+			/>
+		</Configuration>
+		<Configuration
+			Name="Profile_FastCap|Xbox 360"
+			OutputDirectory="Profile_FastCap"
+			IntermediateDirectory="Profile_FastCap"
+			ConfigurationType="1"
+			UseOfMFC="-1"
+			UseOfATL="0"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLX360CompilerTool"
+				Optimization="3"
+				FavorSizeOrSpeed="2"
+				AdditionalIncludeDirectories="..\..\..\include"
+				PreprocessorDefinitions="NDEBUG;_XBOX;PROFILE;FASTCAP"
+				StringPooling="true"
+				ExceptionHandling="0"
+				RuntimeLibrary="0"
+				BufferSecurityCheck="false"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=""
+				WarningLevel="3"
+				DebugInformationFormat="3"
+				CallAttributedProfiling="1"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCX360LinkerTool"
+				AdditionalDependencies="xapilib.lib d3d9.lib d3dx9.lib xgraphics.lib xboxkrnl.lib xnet.lib vcomp.lib xbdm.lib granny2.lib"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\..\lib\xenon"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="1"
+				SetChecksum="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCX360ImageTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCX360DeploymentTool"
+				DeploymentFiles="$(RemoteRoot)=$(ImagePath);$(RemoteRoot)\Media=.\Media"
+				DeploymentType="0"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+			<DebuggerTool
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|Xbox 360"
+			OutputDirectory="Release"
+			IntermediateDirectory="Release"
+			ConfigurationType="1"
+			UseOfMFC="-1"
+			UseOfATL="0"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLX360CompilerTool"
+				Optimization="3"
+				FavorSizeOrSpeed="2"
+				AdditionalIncludeDirectories="..\..\..\include"
+				PreprocessorDefinitions="NDEBUG;_XBOX"
+				StringPooling="true"
+				ExceptionHandling="0"
+				RuntimeLibrary="0"
+				BufferSecurityCheck="false"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=""
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCX360LinkerTool"
+				AdditionalDependencies="xapilib.lib d3d9.lib d3dx9.lib xgraphics.lib xboxkrnl.lib xnet.lib vcomp.lib granny2.lib"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\..\lib\xenon"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				SetChecksum="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCX360ImageTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCX360DeploymentTool"
+				DeploymentFiles="$(RemoteRoot)=$(ImagePath);$(RemoteRoot)\Media=.\Media"
+				DeploymentType="0"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+			<DebuggerTool
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release_LTCG|Xbox 360"
+			OutputDirectory="Release_LTCG"
+			IntermediateDirectory="Release_LTCG"
+			ConfigurationType="1"
+			UseOfMFC="-1"
+			UseOfATL="0"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLX360CompilerTool"
+				Optimization="3"
+				FavorSizeOrSpeed="2"
+				AdditionalIncludeDirectories="..\..\..\include"
+				PreprocessorDefinitions="NDEBUG;_XBOX;LTCG"
+				StringPooling="true"
+				ExceptionHandling="0"
+				RuntimeLibrary="0"
+				BufferSecurityCheck="false"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=""
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCX360LinkerTool"
+				AdditionalDependencies="xapilib.lib d3d9ltcg.lib d3dx9.lib xgraphics.lib xboxkrnl.lib xnet.lib vcomp.lib granny2.lib"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\..\lib\xenon"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				SetChecksum="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCX360ImageTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCX360DeploymentTool"
+				DeploymentFiles="$(RemoteRoot)=$(ImagePath);$(RemoteRoot)\Media=.\Media"
+				DeploymentType="0"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+			<DebuggerTool
+			/>
+		</Configuration>
+		<Configuration
+			Name="DebugND|Xbox 360"
+			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			ConfigurationType="1"
+			UseOfMFC="-1"
+			UseOfATL="0"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLX360CompilerTool"
+				AdditionalOptions=""
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\include"
+				PreprocessorDefinitions="_DEBUG;_XBOX"
+				ExceptionHandling="0"
+				RuntimeLibrary="1"
+				BufferSecurityCheck="false"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=""
+				WarningLevel="3"
+				DebugInformationFormat="3"
+				CallAttributedProfiling="2"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCX360LinkerTool"
+				AdditionalDependencies="xapilibd.lib d3d9d.lib d3dx9d.lib xgraphicsd.lib xboxkrnl.lib xnetd.lib xbdm.lib vcompd.lib granny2.lib"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="..\..\..\lib\xenon"
+				IgnoreDefaultLibraryNames="xapilib"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCX360ImageTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCX360DeploymentTool"
+				ExcludedFromBuild="true"
+				DeploymentFiles="$(RemoteRoot)=$(ImagePath);$(RemoteRoot)\Media=.\Media"
+				DeploymentType="0"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+			<DebuggerTool
+			/>
+		</Configuration>
+		<Configuration
+			Name="ReleaseND|Xbox 360"
+			OutputDirectory="$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			ConfigurationType="1"
+			UseOfMFC="-1"
+			UseOfATL="0"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLX360CompilerTool"
+				Optimization="3"
+				FavorSizeOrSpeed="2"
+				AdditionalIncludeDirectories="..\..\..\include"
+				PreprocessorDefinitions="NDEBUG;_XBOX"
+				StringPooling="true"
+				ExceptionHandling="0"
+				RuntimeLibrary="0"
+				BufferSecurityCheck="false"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile=""
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCX360LinkerTool"
+				AdditionalDependencies="xapilib.lib d3d9.lib d3dx9.lib xgraphics.lib xboxkrnl.lib xnet.lib vcomp.lib granny2.lib"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\..\lib\xenon"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				SetChecksum="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCX360ImageTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCX360DeploymentTool"
+				ExcludedFromBuild="true"
+				DeploymentFiles="$(RemoteRoot)=$(ImagePath);$(RemoteRoot)\Media=.\Media"
+				DeploymentType="0"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+			<DebuggerTool
+			/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			>
+			<File
+				RelativePath=".\granny_callbacks.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\granny_callbacks.h"
+				>
+			</File>
+			<File
+				RelativePath=".\xenon_sample.cpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Shaders"
+			>
+			<File
+				RelativePath=".\Shaders\Shaders.hlsl"
+				>
+				<FileConfiguration
+					Name="Debug|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Skinned shader"
+						CommandLine="fxc /E RigidVS /D EntryPoint_RigidVS /XZi /Tvs_3_0 /Fo&quot;Media\RigidVS.xvu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\RigidVS.xvu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Skinned shader"
+						CommandLine="fxc /E RigidVS /D EntryPoint_RigidVS /Tvs_3_0 /Fo&quot;Media\RigidVS.xvu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\RigidVS.xvu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile_FastCap|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Skinned shader"
+						CommandLine="fxc /E RigidVS /D EntryPoint_RigidVS /Tvs_3_0 /Fo&quot;Media\RigidVS.xvu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\RigidVS.xvu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Skinned shader"
+						CommandLine="fxc /E RigidVS /D EntryPoint_RigidVS /Tvs_3_0 /Fo&quot;Media\RigidVS.xvu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\RigidVS.xvu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release_LTCG|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Skinned shader"
+						CommandLine="fxc /E RigidVS /D EntryPoint_RigidVS /Tvs_3_0 /Fo&quot;Media\RigidVS.xvu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\RigidVS.xvu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugND|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Skinned shader"
+						CommandLine="fxc /E RigidVS /D EntryPoint_RigidVS /XZi /Tvs_3_0 /Fo&quot;Media\RigidVS.xvu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\RigidVS.xvu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="ReleaseND|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Skinned shader"
+						CommandLine="fxc /E RigidVS /D EntryPoint_RigidVS /Tvs_3_0 /Fo&quot;Media\RigidVS.xvu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\RigidVS.xvu"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\Shaders\Shaders.hlsl"
+				>
+				<FileConfiguration
+					Name="Debug|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Skinned shader"
+						CommandLine="fxc /E SkinVSVertexFetch /D EntryPoint_SkinVSVertexFetch /XZi /Tvs_3_0 /Fo&quot;Media\SkinVSVertexFetch.xvu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\SkinVSVertexFetch.xvu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Skinned shader"
+						CommandLine="fxc /E SkinVSVertexFetch /D EntryPoint_SkinVSVertexFetch /Tvs_3_0 /Fo&quot;Media\SkinVSVertexFetch.xvu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\SkinVSVertexFetch.xvu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile_FastCap|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Skinned shader"
+						CommandLine="fxc /E SkinVSVertexFetch /D EntryPoint_SkinVSVertexFetch /Tvs_3_0 /Fo&quot;Media\SkinVSVertexFetch.xvu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\SkinVSVertexFetch.xvu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Skinned shader"
+						CommandLine="fxc /E SkinVSVertexFetch /D EntryPoint_SkinVSVertexFetch /Tvs_3_0 /Fo&quot;Media\SkinVSVertexFetch.xvu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\SkinVSVertexFetch.xvu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release_LTCG|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Skinned shader"
+						CommandLine="fxc /E SkinVSVertexFetch /D EntryPoint_SkinVSVertexFetch /Tvs_3_0 /Fo&quot;Media\SkinVSVertexFetch.xvu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\SkinVSVertexFetch.xvu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugND|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Skinned shader"
+						CommandLine="fxc /E SkinVSVertexFetch /D EntryPoint_SkinVSVertexFetch /XZi /Tvs_3_0 /Fo&quot;Media\SkinVSVertexFetch.xvu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\SkinVSVertexFetch.xvu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="ReleaseND|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Skinned shader"
+						CommandLine="fxc /E SkinVSVertexFetch /D EntryPoint_SkinVSVertexFetch /Tvs_3_0 /Fo&quot;Media\SkinVSVertexFetch.xvu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\SkinVSVertexFetch.xvu"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\Shaders\Shaders.hlsl"
+				>
+				<FileConfiguration
+					Name="Debug|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Pixel shader..."
+						CommandLine="fxc /E PShader /D EntryPoint_PShader /XZi /Tps_3_0 /Fo&quot;Media\PixelShader.xpu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\PixelShader.xpu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Pixel shader..."
+						CommandLine="fxc /E PixelShader /D EntryPoint_PixelShader /Tps_3_0 /Fo&quot;Media\PixelShader.xpu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\PixelShader.xpu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile_FastCap|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Pixel shader..."
+						CommandLine="fxc /E PixelShader /D EntryPoint_PixelShader /Tps_3_0 /Fo&quot;Media\PixelShader.xpu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\PixelShader.xpu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Pixel shader..."
+						CommandLine="fxc /E PShader /D EntryPoint_PShader /Tps_3_0 /Fo&quot;Media\PixelShader.xpu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\PixelShader.xpu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release_LTCG|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Pixel shader..."
+						CommandLine="fxc /E PixelShader /D EntryPoint_PixelShader /Tps_3_0 /Fo&quot;Media\PixelShader.xpu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\PixelShader.xpu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugND|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Pixel shader..."
+						CommandLine="fxc /E PShader /D EntryPoint_PShader /XZi /Tps_3_0 /Fo&quot;Media\PixelShader.xpu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\PixelShader.xpu"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="ReleaseND|Xbox 360"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building Pixel shader..."
+						CommandLine="fxc /E PShader /D EntryPoint_PShader /Tps_3_0 /Fo&quot;Media\PixelShader.xpu&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+						Outputs="Media\PixelShader.xpu"
+					/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Media"
+			>
+			<File
+				RelativePath=".\Media\rayback.gr2"
+				>
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

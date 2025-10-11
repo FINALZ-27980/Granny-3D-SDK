@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "speedcheck", "ps3_speedcheck.vcproj", "{572FE452-7E5A-449C-8B78-F2EBEE31E8DC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		PS3 Debug|Win32 = PS3 Debug|Win32
+		PS3 Release|Win32 = PS3 Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{572FE452-7E5A-449C-8B78-F2EBEE31E8DC}.PS3 Debug|Win32.ActiveCfg = PS3 Debug|Win32
+		{572FE452-7E5A-449C-8B78-F2EBEE31E8DC}.PS3 Debug|Win32.Build.0 = PS3 Debug|Win32
+		{572FE452-7E5A-449C-8B78-F2EBEE31E8DC}.PS3 Release|Win32.ActiveCfg = PS3 Release|Win32
+		{572FE452-7E5A-449C-8B78-F2EBEE31E8DC}.PS3 Release|Win32.Build.0 = PS3 Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

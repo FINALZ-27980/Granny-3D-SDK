@@ -1,0 +1,16 @@
+struct PS_INPUT
+{
+    float3 Diffuse : COLOR0;
+    float2 Texture : TEXCOORD0;
+};
+
+//#define TRILINEAR_SAMPLER sampler_state { MipFilter = LINEAR; MinFilter = LINEAR; MagFilter = LINEAR; AddressU = WRAP; AddressV = WRAP; }
+//sampler2D  diffuse_texture     : register(s0) = TRILINEAR_SAMPLER;
+
+float4 main ( PS_INPUT In ) : COLOR
+{
+    //float3 DiffuseSamp = float3(tex2D( diffuse_texture, In.Texture ));
+    //DiffuseSamp *= In.Diffuse;
+
+    return float4(In.Diffuse, 1);
+}

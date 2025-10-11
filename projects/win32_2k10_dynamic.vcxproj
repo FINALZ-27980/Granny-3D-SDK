@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BA5E0BEC-B277-44C8-B3A5-A606AAC5314E}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>win32_2k10_dynamic</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IntDir>win32_2k10_dynamic_$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)win32_2k10_dynamic_$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IntDir>win32_2k10_dynamic_$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)win32_2k10_dynamic_$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;WIN32_2K10_DYNAMIC_EXPORTS;DEBUG=1;RAD_NO_LOWERCASE_TYPES;_HAS_ITERATOR_DEBUGGING=0;BUILDING_GRANNY=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../source\winxx\win32;../source\winxx;../source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;WIN32_2K10_DYNAMIC_EXPORTS;RAD_NO_LOWERCASE_TYPES;_HAS_ITERATOR_DEBUGGING=0;BUILDING_GRANNY=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../source\winxx\win32;../source\winxx;../source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\winxx\win32\granny.cpp" />
+    <ClCompile Include="..\source\winxx\win32\x86_granny_accelerated_deformers.cpp" />
+    <ClCompile Include="..\source\winxx\win32\x86_granny_bone_operations.cpp" />
+    <ClCompile Include="..\source\winxx\win32\x86_granny_cpu_queries.cpp" />
+    <ClCompile Include="..\source\winxx\win32\x86_granny_matrix_operations.cpp" />
+    <ClCompile Include="..\source\winxx\win32_rrAtomics.cpp" />
+    <ClCompile Include="..\source\winxx\winxx_granny_assert.cpp" />
+    <ClCompile Include="..\source\winxx\winxx_granny_dll.cpp" />
+    <ClCompile Include="..\source\winxx\winxx_granny_file_operations.cpp" />
+    <ClCompile Include="..\source\winxx\winxx_granny_file_reader.cpp" />
+    <ClCompile Include="..\source\winxx\winxx_granny_file_writer.cpp" />
+    <ClCompile Include="..\source\winxx\winxx_granny_memory.cpp" />
+    <ClCompile Include="..\source\winxx\winxx_granny_startup.cpp" />
+    <ClCompile Include="..\source\winxx\winxx_granny_system_clock.cpp" />
+    <ClCompile Include="..\source\winxx\winxx_granny_threads.cpp" />
+    <ClCompile Include="..\source\winxx\winxx_granny_windows.cpp" />
+    <ClCompile Include="..\source\arithbit.c" />
+    <ClCompile Include="..\source\binktc.c" />
+    <ClCompile Include="..\source\encode.c" />
+    <ClCompile Include="..\source\granny_aggr_alloc.cpp" />
+    <ClCompile Include="..\source\granny_animation.cpp" />
+    <ClCompile Include="..\source\granny_animation_binding.cpp" />
+    <ClCompile Include="..\source\granny_art_tool_info.cpp" />
+    <ClCompile Include="..\source\granny_assert.cpp" />
+    <ClCompile Include="..\source\granny_back_compat.cpp" />
+    <ClCompile Include="..\source\granny_basis_conversion.cpp" />
+    <ClCompile Include="..\source\granny_binary_search.cpp" />
+    <ClCompile Include="..\source\granny_bink.cpp" />
+    <ClCompile Include="..\source\granny_bink0_compression.cpp" />
+    <ClCompile Include="..\source\granny_bink1_compression.cpp" />
+    <ClCompile Include="..\source\granny_bone_operations.cpp" />
+    <ClCompile Include="..\source\granny_bspline.cpp" />
+    <ClCompile Include="..\source\granny_bspline_buffers.cpp" />
+    <ClCompile Include="..\source\granny_bspline_solver.cpp" />
+    <ClCompile Include="..\source\granny_bspline_solver_core.cpp" />
+    <ClCompile Include="..\source\granny_camera.cpp" />
+    <ClCompile Include="..\source\granny_catenating_reader.cpp" />
+    <ClCompile Include="..\source\granny_compression_tools.cpp" />
+    <ClCompile Include="..\source\granny_compress_curve.cpp" />
+    <ClCompile Include="..\source\granny_constants.cpp" />
+    <ClCompile Include="..\source\granny_control.cpp" />
+    <ClCompile Include="..\source\granny_controlled_animation.cpp" />
+    <ClCompile Include="..\source\granny_controlled_pose.cpp" />
+    <ClCompile Include="..\source\granny_crc.cpp" />
+    <ClCompile Include="..\source\granny_curve.cpp" />
+    <ClCompile Include="..\source\granny_curve_fast.cpp" />
+    <ClCompile Include="..\source\granny_data_type_conversion.cpp" />
+    <ClCompile Include="..\source\granny_data_type_definition.cpp" />
+    <ClCompile Include="..\source\granny_data_type_io.cpp" />
+    <ClCompile Include="..\source\granny_deformers.cpp" />
+    <ClCompile Include="..\source\granny_degree_of_freedom.cpp" />
+    <ClCompile Include="..\source\granny_exporter_info.cpp" />
+    <ClCompile Include="..\source\granny_file.cpp" />
+    <ClCompile Include="..\source\granny_file_builder.cpp" />
+    <ClCompile Include="..\source\granny_file_compressor.cpp" />
+    <ClCompile Include="..\source\granny_file_format.cpp" />
+    <ClCompile Include="..\source\granny_file_info.cpp" />
+    <ClCompile Include="..\source\granny_file_operations.cpp" />
+    <ClCompile Include="..\source\granny_file_reader.cpp" />
+    <ClCompile Include="..\source\granny_file_writer.cpp" />
+    <ClCompile Include="..\source\granny_find_knot.cpp" />
+    <ClCompile Include="..\source\granny_fixed_allocator.cpp" />
+    <ClCompile Include="..\source\granny_float16.cpp" />
+    <ClCompile Include="..\source\granny_floats.cpp" />
+    <ClCompile Include="..\source\granny_generic_deformers.cpp" />
+    <ClCompile Include="..\source\granny_ik.cpp" />
+    <ClCompile Include="..\source\granny_image_operations.cpp" />
+    <ClCompile Include="..\source\granny_intersection.cpp" />
+    <ClCompile Include="..\source\granny_local_pose.cpp" />
+    <ClCompile Include="..\source\granny_log.cpp" />
+    <ClCompile Include="..\source\granny_lookat.cpp" />
+    <ClCompile Include="..\source\granny_material.cpp" />
+    <ClCompile Include="..\source\granny_math.cpp" />
+    <ClCompile Include="..\source\granny_matrix_operations.cpp" />
+    <ClCompile Include="..\source\granny_member_iterator.cpp" />
+    <ClCompile Include="..\source\granny_memory.cpp" />
+    <ClCompile Include="..\source\granny_memory_arena.cpp" />
+    <ClCompile Include="..\source\granny_memory_file_reader.cpp" />
+    <ClCompile Include="..\source\granny_memory_file_writer.cpp" />
+    <ClCompile Include="..\source\granny_memory_ops.cpp" />
+    <ClCompile Include="..\source\granny_mesh.cpp" />
+    <ClCompile Include="..\source\granny_mesh_binding.cpp" />
+    <ClCompile Include="..\source\granny_mesh_builder.cpp" />
+    <ClCompile Include="..\source\granny_mesh_deformer.cpp" />
+    <ClCompile Include="..\source\granny_mirror_specification.cpp" />
+    <ClCompile Include="..\source\granny_model.cpp" />
+    <ClCompile Include="..\source\granny_model_control_binding.cpp" />
+    <ClCompile Include="..\source\granny_model_instance.cpp" />
+    <ClCompile Include="..\source\granny_mod_support.cpp" />
+    <ClCompile Include="..\source\granny_oodle0_compression.cpp" />
+    <ClCompile Include="..\source\granny_oodle1_compression.cpp" />
+    <ClCompile Include="..\source\granny_periodic_loop.cpp" />
+    <ClCompile Include="..\source\granny_pixel_layout.cpp" />
+    <ClCompile Include="..\source\granny_platform_convert.cpp" />
+    <ClCompile Include="..\source\granny_pointer_hash.cpp" />
+    <ClCompile Include="..\source\granny_pose_cache.cpp" />
+    <ClCompile Include="..\source\granny_quaternion_scaleoffset.cpp" />
+    <ClCompile Include="..\source\granny_retargeter.cpp" />
+    <ClCompile Include="..\source\granny_s3tc.cpp" />
+    <ClCompile Include="..\source\granny_sieve.cpp" />
+    <ClCompile Include="..\source\granny_skeleton.cpp" />
+    <ClCompile Include="..\source\granny_skeleton_builder.cpp" />
+    <ClCompile Include="..\source\granny_spu_animation.cpp" />
+    <ClCompile Include="..\source\granny_spu_animation_binding.cpp" />
+    <ClCompile Include="..\source\granny_spu_animation_info.cpp" />
+    <ClCompile Include="..\source\granny_spu_commands_ppuside.cpp" />
+    <ClCompile Include="..\source\granny_spu_controlled_animation.cpp" />
+    <ClCompile Include="..\source\granny_spu_track_group.cpp" />
+    <ClCompile Include="..\source\granny_stack_allocator.cpp" />
+    <ClCompile Include="..\source\granny_string.cpp" />
+    <ClCompile Include="..\source\granny_string_comparison_callback.cpp" />
+    <ClCompile Include="..\source\granny_string_database.cpp" />
+    <ClCompile Include="..\source\granny_string_formatting.cpp" />
+    <ClCompile Include="..\source\granny_string_table.cpp" />
+    <ClCompile Include="..\source\granny_tangent_frame.cpp" />
+    <ClCompile Include="..\source\granny_telemetry.cpp" />
+    <ClCompile Include="..\source\granny_test_types.cpp" />
+    <ClCompile Include="..\source\granny_texture.cpp" />
+    <ClCompile Include="..\source\granny_texture_builder.cpp" />
+    <ClCompile Include="..\source\granny_thread_safety.cpp" />
+    <ClCompile Include="..\source\granny_track_group.cpp" />
+    <ClCompile Include="..\source\granny_track_group_builder.cpp" />
+    <ClCompile Include="..\source\granny_track_group_sampler.cpp" />
+    <ClCompile Include="..\source\granny_track_mask.cpp" />
+    <ClCompile Include="..\source\granny_track_sampler.cpp" />
+    <ClCompile Include="..\source\granny_transform.cpp" />
+    <ClCompile Include="..\source\granny_tri_topology.cpp" />
+    <ClCompile Include="..\source\granny_type_listing.cpp" />
+    <ClCompile Include="..\source\granny_units.cpp" />
+    <ClCompile Include="..\source\granny_variant_builder.cpp" />
+    <ClCompile Include="..\source\granny_version_checking.cpp" />
+    <ClCompile Include="..\source\granny_vertex_data.cpp" />
+    <ClCompile Include="..\source\granny_world_pose.cpp" />
+    <ClCompile Include="..\source\radarith.c" />
+    <ClCompile Include="..\source\radlz.c" />
+    <ClCompile Include="..\source\rrBase.cpp" />
+    <ClCompile Include="..\source\rrCore.c" />
+    <ClCompile Include="..\source\rrMath.cpp" />
+    <ClCompile Include="..\source\varbits.c" />
+    <ClCompile Include="..\source\wavelet.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

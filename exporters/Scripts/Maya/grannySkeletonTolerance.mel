@@ -1,0 +1,57 @@
+proc float NodeDist(string $obj0, string $obj1)
+{
+    float $xDif = (`getAttr ($obj0 + ".translateX")` - `getAttr ($obj1 + ".translateX")`);
+    float $yDif = (`getAttr ($obj0 + ".translateY")` - `getAttr ($obj1 + ".translateY")`);
+    float $zDif = (`getAttr ($obj0 + ".translateZ")` - `getAttr ($obj1 + ".translateZ")`);
+
+    return sqrt(($xDif * $xDif) + ($yDif * $yDif) + ($zDif * $zDif));
+}
+
+proc float ToleranceRecurse(string $objects[],
+                            string $bone,
+                            float  $EETolerance,
+                            float  $DistLowerBound,
+                            float  $AngLowerBound)
+{
+    float $maxHere = $DistLowerBound;
+    for ($obj in $objects)
+    {
+        string $firstParentOfObj = firstParentOf($obj);
+		if (isSameObject($bone, $firstParentOfObj))
+        {
+            float $thisDist   = `NodeDist $bone $obj`;
+            float $recurseVal = `ToleranceRecurse $objects $obj $EETolerance $DistLowerBound $AngLowerBound`;
+            print ($bone + " " + $obj + "\n");
+
+            float $thisVal = $thisDist + $recurseVal;
+            if ($thisVal > $maxHere)
+            {
+                $maxHere = $thisVal;
+            }
+        }
+    }
+
+    float $AngTol = $AngLowerBound;
+    if ($maxHere > $EETolerance)
+    {
+        $AngTol = rad_to_deg(asin($EETolerance / $maxHere));
+        if ($AngTol < $AngLowerBound)
+        {
+            $AngTol = $AngLowerBound;
+        }
+    }
+
+    GrannySetValue "Position curve tolerance" $EETolerance "boneanim" $bone;
+    GrannySetValue "Orientation curve tolerance" $AngTol "boneanim" $bone;
+    return $maxHere;
+}
+
+
+
+global proc HeuristicTolerance(string $bone,
+                               float  $EETolerance,
+                               float  $DistLowerBound,
+                               float  $AngLowerBound)
+{
+    ToleranceRecurse(`ls -tr -dagObjects $bone`, $bone, $EETolerance,  $DistLowerBound, $AngLowerBound);
+}

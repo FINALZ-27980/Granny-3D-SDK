@@ -1,0 +1,34 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xenon_sample", "xenon_sample.vcproj", "{1371E99D-3C56-477E-8287-AAE7172EE758}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Xbox 360 = Debug|Xbox 360
+		DebugND|Xbox 360 = DebugND|Xbox 360
+		Profile_FastCap|Xbox 360 = Profile_FastCap|Xbox 360
+		Profile|Xbox 360 = Profile|Xbox 360
+		Release_LTCG|Xbox 360 = Release_LTCG|Xbox 360
+		Release|Xbox 360 = Release|Xbox 360
+		ReleaseND|Xbox 360 = ReleaseND|Xbox 360
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1371E99D-3C56-477E-8287-AAE7172EE758}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
+		{1371E99D-3C56-477E-8287-AAE7172EE758}.Debug|Xbox 360.Build.0 = Debug|Xbox 360
+		{1371E99D-3C56-477E-8287-AAE7172EE758}.DebugND|Xbox 360.ActiveCfg = DebugND|Xbox 360
+		{1371E99D-3C56-477E-8287-AAE7172EE758}.DebugND|Xbox 360.Build.0 = DebugND|Xbox 360
+		{1371E99D-3C56-477E-8287-AAE7172EE758}.Profile_FastCap|Xbox 360.ActiveCfg = Profile_FastCap|Xbox 360
+		{1371E99D-3C56-477E-8287-AAE7172EE758}.Profile_FastCap|Xbox 360.Build.0 = Profile_FastCap|Xbox 360
+		{1371E99D-3C56-477E-8287-AAE7172EE758}.Profile|Xbox 360.ActiveCfg = Profile|Xbox 360
+		{1371E99D-3C56-477E-8287-AAE7172EE758}.Profile|Xbox 360.Build.0 = Profile|Xbox 360
+		{1371E99D-3C56-477E-8287-AAE7172EE758}.Release_LTCG|Xbox 360.ActiveCfg = Release_LTCG|Xbox 360
+		{1371E99D-3C56-477E-8287-AAE7172EE758}.Release_LTCG|Xbox 360.Build.0 = Release_LTCG|Xbox 360
+		{1371E99D-3C56-477E-8287-AAE7172EE758}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
+		{1371E99D-3C56-477E-8287-AAE7172EE758}.Release|Xbox 360.Build.0 = Release|Xbox 360
+		{1371E99D-3C56-477E-8287-AAE7172EE758}.ReleaseND|Xbox 360.ActiveCfg = ReleaseND|Xbox 360
+		{1371E99D-3C56-477E-8287-AAE7172EE758}.ReleaseND|Xbox 360.Build.0 = ReleaseND|Xbox 360
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,36 @@
+struct VS_IN_RIGID
+{
+    float3  pos  : POSITION;
+    float3  norm : NORMAL;
+    float2  tex0 : TEXCOORD0;
+};
+
+struct VS_OUT
+{
+    float4 Position         : POSITION;
+    float2 Tex0             : TEXCOORD0;
+    float3 Diffuse          : COLOR0;
+};
+
+
+#define TRILINEAR_SAMPLER sampler_state { MipFilter = LINEAR; MinFilter = LINEAR; MagFilter = LINEAR; AddressU = WRAP; AddressV = WRAP; }
+sampler2D  diffuse_texture     : register(s0) = TRILINEAR_SAMPLER;
+
+
+VS_OUT RigidVS( VS_IN_RIGID In,
+                uniform float4x4 modelViewProj,
+                uniform float4x4 objToWorld,
+				uniform float3 DirFromLight,
+				uniform float4 LightColour,
+				uniform float4 AmbientColour
+                )
+{
+    float3 ObjNormal = float3(mul(objToWorld, float4(In.norm, 0)));
+    
+    VS_OUT Out;
+    Out.Position = mul(modelViewProj, float4(In.pos,1));
+    Out.Tex0     = In.tex0;
+    Out.Diffuse  = float3(LightColour * dot(ObjNormal, DirFromLight) + AmbientColour);
+
+    return Out;
+}

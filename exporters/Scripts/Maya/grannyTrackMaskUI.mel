@@ -1,0 +1,414 @@
+global proc string[] gtm_getSelectedBoneList()
+{
+    return `ls -sl -type transform`;
+}
+
+global proc string[] gtm_getBoneList()
+{
+    return `ls -type transform`;
+}
+
+global proc gtm_putAttrOn(string $attr, string $obj)
+{
+    if (! `attributeExists $attr $obj`)
+    {
+        addAttr -ln $attr -at double $obj;
+        setAttr -k false -cb true ($obj + "." + $attr);
+    }
+}
+
+
+global proc string GrannyNameSafe (string $s)
+{
+// removes spaces and non-alphaNumeric characters from string $s
+    $s = `strip $s`;
+    string $t[];
+    int $i;
+    for ($i = 1; $i <= `size $s`; $i ++)
+    {
+        string $g;
+        $g = `substring $s $i ($i)`;
+        if (`isValidString $g "[a-zA-Z0-9_]"`)
+        {
+            $t[$i] = $g;
+        }
+        else
+        {
+            $t[$i] = "_";
+        }
+    }
+    return `stringArrayToString $t ""`;
+}
+
+// sync the visible list to the global variable
+global proc GrannyUpdateTrackMaskList ()
+{
+    global string $g_GTM_List[];
+    if (`control -exists GTM_TrackMaskList`)
+        textScrollList -e -ra GTM_TrackMaskList;
+    string $f;
+    for ($f in $g_GTM_List)
+    {
+        textScrollList -e -a $f GTM_TrackMaskList;
+    }
+}
+// make sure every bone in the scene has the attributes
+global proc GrannyAddTrackMaskAttributes ()
+{
+    global string $g_GTM_List[];
+
+    string $obj;
+    string $boneList[] = gtm_getBoneList();
+    for ($obj in $boneList )
+    {
+        string $attr;
+        for ($attr in $g_GTM_List)
+        {
+            $attr = "TrackMask" + $attr;
+            gtm_putAttrOn($attr, $obj);
+        }
+    }
+}
+
+// add a mask to the global list
+global proc GrannyAddTrackMask (string $track)
+{
+    string $q = `substring $track 1 1`;
+    $track = `toupper $q` + `substring $track 2 999`;
+
+    global string $g_GTM_List[];
+    appendStringArray $g_GTM_List {$track} 1;
+    $g_GTM_List = `sort $g_GTM_List`;
+    GrannyAddTrackMaskAttributes();
+};
+
+
+// delete a track mask from the global list
+global proc GrannyDeleteTrackMask (string $track)
+{
+    global string $g_GTM_List[];
+    $g_GTM_List = `stringArrayRemove {$track} $g_GTM_List`;
+    string $bone;
+    string $boneList[] = gtm_getBoneList();
+    for ($bone in $boneList)
+    {
+        if (`attributeExists ("TrackMask" + $track) $bone`)
+        {
+            deleteAttr ($bone + ".TrackMask" + $track);
+        }
+    }
+}
+
+// rename a track mask
+global proc GrannyRenameTrackMask (string $track)
+{
+    string $newName;
+    $newName = `promptDialog -title "Rename Track Mask" -b "Cancel" -cb "Cancel" -b "OK" -db "OK" -m "enter a new name for the track mask"`;
+
+    if ($newName == "OK")
+    {
+        $newName = `promptDialog -q -text`;
+        $newName = `GrannyNameSafe  $newName`;
+
+        // first, rename existing atts
+        string $obj;
+        string $boneList[] = gtm_getBoneList();
+
+        for ($obj in $boneList)
+        {
+            if (`attributeExists ("TrackMask" + $track) $obj`)
+            {
+                // cache the value
+                float $temp = `getAttr ($obj + ".TrackMask" + $track)`;
+                // delete old Attribute
+                deleteAttr ($obj + ".TrackMask" + $track);
+
+                // add new one
+                gtm_putAttrOn(("TrackMask" + $newName), $obj);
+
+                // reset the value
+                setAttr ($obj + ".TrackMask" + $newName) $temp;
+            }
+        }
+
+        // now update display list
+        GrannyDeleteTrackMask $track;
+        GrannyAddTrackMask $newName;
+        GrannyUpdateTrackMaskList();
+    }
+};
+
+// list all the valid track mask attributes in the scene
+global proc GrannyBuildTrackMaskList()
+{
+    global string $g_GTM_List[];
+    string $collectedAttrs[];
+    string $bones[] = gtm_getBoneList();
+    string $b;
+    for($b in $bones)
+    {
+        string $atts[] = `listAttr -ud $b`;
+        string $a;
+        for ($a in $atts)
+        {
+            string $q;
+            if (`GrannyValidTrackMaskName $a`)
+            {
+                string $q;
+                $q = `substring $a 10 999`;
+
+                if (! `stringArrayCount $q $collectedAttrs`)
+                {
+                    appendStringArray $collectedAttrs {$q}  1;
+                }
+            }
+        }
+    }
+
+    $g_GTM_List = `sort $collectedAttrs`;
+}
+
+// is $name a valid TrackMask name?
+global proc int GrannyValidTrackMaskName(string $name)
+{
+    return (`isValidString $name "^TrackMask([a-zA-Z]+)([a-zA-Z0-9_]+)" ` );
+}
+
+
+
+// does object $obj have a track mask?
+global proc int GrannyHasTrackMask (string $obj)
+{
+    string $listAttr[] = `listAttr -ud $obj`;
+    string $a;
+    for ($a in $listAttr)
+        {
+            if (`match "^TrackMask([a-zA-Z]+)([a-zA-Z0-9_]+)" $a` == $a) return 1;
+        }
+        return 0;
+}
+
+
+
+// try to add a new track mask from the text entry box
+global proc GrannyValidateNewTrackMask()
+{
+    if (`control -exists GTM_newMaskField`)
+    {
+        $t = `textField -q -text GTM_newMaskField`;
+        $t = `GrannyNameSafe $t`;
+
+        if (`isValidString $t "([a-zA-Z]+)([a-zA-Z0-9_]+)"`)
+        {
+            GrannyAddTrackMask $t;
+            textField -e -text "" GTM_newMaskField;
+            GrannyUpdateTrackMaskList();
+        }
+        else
+        {
+            warning "Invalid TrackMask name";
+        }
+    }
+}
+
+// delete the selected tracks from the list
+global proc GrannyDeleteSelectedTrackMask()
+{
+    if (`control -exists GTM_TrackMaskList`)
+    {
+        string $sel[] = `textScrollList -q -si GTM_TrackMaskList`;
+
+        global string $g_GTM_List[];
+        $g_GTM_List = `stringArrayRemove $sel $g_GTM_List`;
+        GrannyUpdateTrackMaskList();
+
+        for ($attr in $sel)
+        {
+            GrannyDeleteTrackMask $attr;
+        }
+    }
+}
+
+// selects objects in the mask with a value > 0
+global proc GrannySelectItemsWithMask()
+{
+    select -cl;
+    string $sel[] = `textScrollList -q -si GTM_TrackMaskList`;
+    string $b;
+    for ($b in gtm_getBoneList())
+    {
+        string $s;
+        for ($s in $sel)
+        {
+            if (`getAttr ($b + ".TrackMask" + $s)` > 0)
+            {
+                select -add $b;
+                break;
+            }
+        }
+    }
+}
+
+global proc GrannyTagWithTrackMask(string $boneList[], string $trackMask, float $val)
+{
+    string $obj;
+    for ($obj in $boneList )
+    {
+        setAttr ($obj + ".TrackMask" + $trackMask) $val;
+    }
+}
+
+global proc GrannySetAll()
+{
+    if (size(`textScrollList -q -si GTM_TrackMaskList`) == 1)
+    {
+        string $boneList[] = gtm_getBoneList();
+        string $sel[]      = `textScrollList -q -si GTM_TrackMaskList`;
+        float $val         = `floatField -q -value GTM_value`;
+
+        GrannyTagWithTrackMask $boneList $sel[0] $val;
+    }
+}
+
+global proc GrannySetSelection()
+{
+    if (size(`textScrollList -q -si GTM_TrackMaskList`) == 1)
+    {
+        string $boneList[] = gtm_getSelectedBoneList();
+        string $sel[]      = `textScrollList -q -si GTM_TrackMaskList`;
+        float $val         = `floatField -q -value GTM_value`;
+
+        GrannyTagWithTrackMask $boneList $sel[0] $val;
+    }
+}
+
+global proc GrannySelect(float $val)
+{
+    print $val;
+    if (size(`textScrollList -q -si GTM_TrackMaskList`) == 1)
+    {
+        string $boneList[] = gtm_getBoneList();
+        string $sel[]      = `textScrollList -q -si GTM_TrackMaskList`;
+
+        select -clear;
+        for ($obj in $boneList)
+        {
+            float $curr = getAttr ($obj + ".TrackMask" + $sel[0]);
+            if ($curr == $val)
+            {
+                select -add $obj;
+            }
+        }
+    }
+}
+
+global proc GrannySelectNot(float $val)
+{
+    if (size(`textScrollList -q -si GTM_TrackMaskList`) == 1)
+    {
+        string $boneList[] = gtm_getBoneList();
+        string $sel[]      = `textScrollList -q -si GTM_TrackMaskList`;
+
+        select -clear;
+        for ($obj in $boneList)
+        {
+            float $curr = getAttr ($obj + ".TrackMask" + $sel[0]);
+            if ($curr != $val)
+            {
+                select -add $obj;
+            }
+        }
+    }
+}
+
+global proc GrannyTrackMaskUI()
+{
+    // --- window layout
+    window -minimizeButton off
+           -maximizeButton off
+           -sizeable on
+           -title "Granny Track Masks Editor"
+           -titleBar on
+           -resizeToFitChildren on
+           -widthHeight 240 400 TrackMaskWindow;
+
+    columnLayout -columnAttach both 5 -columnWidth 230 -rowSpacing 5 -width 240 GTM_main;
+        textScrollList -height 140 GTM_TrackMaskList;
+
+        rowLayout -cl2 center left -columnWidth2 50 170  -height 20 -numberOfColumns 2 -width 230 addField;
+            button -h 22 -w 45 -label "Add" GTM_addButton;
+            textField -h 24 -width 170 GTM_newMaskField;
+        setParent ..;
+
+        rowLayout -cl2 center center -columnWidth2 110 110  -height 20 -numberOfColumns 2 -width 230 otherButtons;
+            button -height 22 -align center -label "Delete" -width 105 GTM_deleteButton;
+            button -height 22 -align center -label "Rename" -width 105 GTM_renameButton;
+        setParent ..;
+
+        columnLayout -columnAlign center -columnAttach both 5 -columnWidth 230 -rowSpacing 5 -width 240 GTM_sets;
+             rowLayout -cl2 center center -columnWidth2 110 110 -numberOfColumns 2 -width 240 GTM_buttons1;
+                  floatField -min 0 -max 1 -value 0 GTM_value;
+             setParent ..;
+             rowLayout -cl2 center center -columnWidth2 110 110 -numberOfColumns 2 -width 240 GTM_buttons2;
+                  button -height 22 -align center -label "Set All" -width 104 GTM_setAll;
+                  button -height 22 -align center -label "Set Selection" -width 104 GTM_setSelection;
+             setParent ..;
+        setParent ..;
+
+        columnLayout -columnAlign center -columnAttach both 5 -columnWidth 230 -rowSpacing 5 -width 240 GTM_selects_col;
+             iconTextStaticLabel -label "Selection" -st "textOnly" -height 30 selection_label;
+             rowLayout -cl2 center center -columnWidth2 110 110 -numberOfColumns 2 -width 240 GTM_selects_buttons1;
+                  button -height 22 -align center -label "== 0" -width 104 GTM_select_zero;
+                  button -height 22 -align center -label "!= 0" -width 104 GTM_select_ne_zero;
+             setParent ..;
+             rowLayout -cl2 center center -columnWidth2 110 110 -numberOfColumns 2 -width 240 GTM_selects_buttons2;
+                  button -height 22 -align center -label "== 1" -width 104 GTM_select_one;
+                  button -height 22 -align center -label "!= 1" -width 104 GTM_select_ne_one;
+             setParent ..;
+             rowLayout -cl2 center center -columnWidth2 110 110 -numberOfColumns 2 -width 240 GTM_selects_buttons3;
+                  button -height 22 -align center -label "== val" -width 104 GTM_select_val;
+                  button -height 22 -align center -label "!= val" -width 104 GTM_select_ne_val;
+             setParent ..;
+        setParent ..;
+
+        popupMenu -parent GTM_TrackMaskList;
+        menuItem -label "Remove"
+                 -command "GrannyDeleteSelectedTrackMask()"
+                 GTM_DeleteSelectedTracksMenuItem;
+        menuItem -label "Select in scene"
+                 -command "GrannySelectItemsWithMask()"
+                 GTM_SelectObjectsMenuItem;
+    setParent ..;
+
+    // --- assign the commands
+
+    //adding
+    button  -e -c "GrannyValidateNewTrackMask()" GTM_addButton;
+    textField -e -ec "GrannyValidateNewTrackMask()" GTM_newMaskField;
+
+    //deleting
+    button -e -c "GrannyDeleteSelectedTrackMask()" GTM_deleteButton;
+    textScrollList -e -deleteKeyCommand "GrannyDeleteSelectedTrackMask()" GTM_TrackMaskList;
+
+    // renaming
+    button -e -c "string $sel[] = `textScrollList -q -si GTM_TrackMaskList`; GrannyRenameTrackMask $sel[0]" GTM_renameButton;
+
+    // tagging
+    button -e -c "GrannySetAll();"       GTM_setAll;
+    button -e -c "GrannySetSelection();" GTM_setSelection;
+
+    // selecting
+    button -e -c "GrannySelect    0;" GTM_select_zero;
+    button -e -c "GrannySelectNot 0;" GTM_select_ne_zero;
+    button -e -c "GrannySelect    1;" GTM_select_one;
+    button -e -c "GrannySelectNot 1;" GTM_select_ne_one;
+    button -e -c "float $val = `floatField -q -value GTM_value`; GrannySelect    $val;" GTM_select_val;
+    button -e -c "float $val = `floatField -q -value GTM_value`; GrannySelectNot $val;" GTM_select_ne_val;
+
+    GrannyBuildTrackMaskList();
+    GrannyUpdateTrackMaskList();
+    GrannyAddTrackMaskAttributes();
+    showWindow;
+}
+
+GrannyTrackMaskUI();

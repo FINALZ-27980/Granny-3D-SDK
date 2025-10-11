@@ -1,0 +1,52 @@
+struct VS_IN
+{
+    float3  Position        : POSITION0;
+	float4  BoneWeights     : BLENDWEIGHT;
+	float4  BoneIndices     : BLENDINDICES;
+    float3  Normal          : NORMAL;
+    float2  Tex0            : TEXCOORD0;
+};
+
+struct VS_OUT
+{
+    float4 Position         : POSITION;
+    float2 Tex0             : TEXCOORD0;
+    float3 Diffuse          : COLOR0;
+};
+
+#define TRILINEAR_SAMPLER sampler_state { MipFilter = LINEAR; MinFilter = LINEAR; MagFilter = LINEAR; AddressU = WRAP; AddressV = WRAP; }
+sampler2D  diffuse_texture     : register(s0) = TRILINEAR_SAMPLER;
+
+float3x4 BoneMatrices[46];
+
+VS_OUT SkinVSVertexFetch( VS_IN In,
+						  uniform float4x4 proj,
+						  uniform float3 DirFromLight,
+						  uniform float4 LightColour,
+						  uniform float4 AmbientColour )
+{
+    
+	// For some retarded reason, the weight semantic doesn't cause a normalize
+	float4 weights = In.BoneWeights / 255.0;
+	float4 index   = In.BoneIndices;
+	index = min(index, float4(45, 45, 45, 45));
+    
+    float3 WorldPos = 0;
+	WorldPos += float3(weights.x * mul(BoneMatrices[index.x],  float4(In.Position,1) ));
+	WorldPos += float3(weights.y * mul(BoneMatrices[index.y],  float4(In.Position,1) ));
+	WorldPos += float3(weights.z * mul(BoneMatrices[index.z],  float4(In.Position,1) ));
+	WorldPos += float3(weights.w * mul(BoneMatrices[index.w],  float4(In.Position,1) ));
+
+    float3 WorldNormal = 0;
+	WorldNormal += float3(weights.x * mul(BoneMatrices[index.x],  float4(In.Normal,0) ));
+	WorldNormal += float3(weights.y * mul(BoneMatrices[index.y],  float4(In.Normal,0) ));
+	WorldNormal += float3(weights.z * mul(BoneMatrices[index.z],  float4(In.Normal,0) ));
+	WorldNormal += float3(weights.w * mul(BoneMatrices[index.w],  float4(In.Normal,0) ));
+
+    VS_OUT Out;
+    Out.Position = mul(proj, float4(WorldPos,1));
+    Out.Tex0     = In.Tex0;
+    Out.Diffuse  = float3(LightColour * dot(normalize(WorldNormal), DirFromLight) + AmbientColour);
+
+    return Out;
+}

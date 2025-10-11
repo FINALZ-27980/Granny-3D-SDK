@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xenon_speedcheck", "xenon_speedcheck.vcproj", "{EFD203F5-0BB7-45B7-BF69-EB5F9BC469B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Xbox 360 = Debug|Xbox 360
+		DebugND|Xbox 360 = DebugND|Xbox 360
+		Profile_FastCap|Xbox 360 = Profile_FastCap|Xbox 360
+		Profile|Xbox 360 = Profile|Xbox 360
+		Release_LTCG|Xbox 360 = Release_LTCG|Xbox 360
+		Release|Xbox 360 = Release|Xbox 360
+		ReleaseND|Xbox 360 = ReleaseND|Xbox 360
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFD203F5-0BB7-45B7-BF69-EB5F9BC469B3}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
+		{EFD203F5-0BB7-45B7-BF69-EB5F9BC469B3}.Debug|Xbox 360.Build.0 = Debug|Xbox 360
+		{EFD203F5-0BB7-45B7-BF69-EB5F9BC469B3}.DebugND|Xbox 360.ActiveCfg = DebugND|Xbox 360
+		{EFD203F5-0BB7-45B7-BF69-EB5F9BC469B3}.DebugND|Xbox 360.Build.0 = DebugND|Xbox 360
+		{EFD203F5-0BB7-45B7-BF69-EB5F9BC469B3}.Profile_FastCap|Xbox 360.ActiveCfg = Profile_FastCap|Xbox 360
+		{EFD203F5-0BB7-45B7-BF69-EB5F9BC469B3}.Profile_FastCap|Xbox 360.Build.0 = Profile_FastCap|Xbox 360
+		{EFD203F5-0BB7-45B7-BF69-EB5F9BC469B3}.Profile|Xbox 360.ActiveCfg = Profile|Xbox 360
+		{EFD203F5-0BB7-45B7-BF69-EB5F9BC469B3}.Profile|Xbox 360.Build.0 = Profile|Xbox 360
+		{EFD203F5-0BB7-45B7-BF69-EB5F9BC469B3}.Release_LTCG|Xbox 360.ActiveCfg = Release_LTCG|Xbox 360
+		{EFD203F5-0BB7-45B7-BF69-EB5F9BC469B3}.Release_LTCG|Xbox 360.Build.0 = Release_LTCG|Xbox 360
+		{EFD203F5-0BB7-45B7-BF69-EB5F9BC469B3}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
+		{EFD203F5-0BB7-45B7-BF69-EB5F9BC469B3}.Release|Xbox 360.Build.0 = Release|Xbox 360
+		{EFD203F5-0BB7-45B7-BF69-EB5F9BC469B3}.ReleaseND|Xbox 360.ActiveCfg = ReleaseND|Xbox 360
+		{EFD203F5-0BB7-45B7-BF69-EB5F9BC469B3}.ReleaseND|Xbox 360.Build.0 = ReleaseND|Xbox 360
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,42 @@
+/*
+<help>\tGrannySimpleView ()
+<help>
+<help>exports the current scene with as much of the current
+<help>view settings preserved as possible, and loads the file
+<help>in the Granny Viewer.
+by: dmoore 7/7/2006
+version 0.1
+
+0.1:        initial revision
+
+*/
+
+global proc GrannySimpleView()
+{
+    // Stuff our settings somewhere we can find them, we'll be changing them...
+    string $SettingsSave = `internalVar -userTmpDir` + "gr_sets.sav";
+    GrannySaveSettings $SettingsSave;
+
+    GrannySetValue "include reference in export" true "global" "Animations";
+    GrannySetValue "include reference in export" true "global" "Materials";
+    GrannySetValue "include reference in export" true "global" "Meshes";
+    GrannySetValue "include reference in export" true "global" "Models";
+    GrannySetValue "include reference in export" true "global" "Textures";
+
+    $storeSelection = `selectedNodes`;
+    select -all -vis;
+
+    $SelPanel = `getPanel -wf`;
+    $SelCamera = `modelPanel -q -cam $SelPanel`;
+    select -add $SelCamera;
+
+    string $ModelFile = `internalVar -userTmpDir` + "grtemp.gr2";
+    GrannyExport -s true -i false $ModelFile;
+
+    // Restore the settings
+    select $storeSelection;
+    GrannyLoadSettings $SettingsSave;
+
+    // Fire up the granny viewer with the appropriate file
+    system("start gr2_viewer -autoplay " + $ModelFile + " -camera " + $SelCamera);
+}

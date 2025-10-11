@@ -1,0 +1,526 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE Project[
+  <!ELEMENT Project (Includes,OptionList,Localize?,OptionValues,DefaultValues)>
+  <!ATTLIST Project
+	Platform CDATA #REQUIRED
+    Version CDATA #REQUIRED
+    Type CDATA #REQUIRED
+	>
+  <!ELEMENT Includes (Include*)>
+  <!ELEMENT Include (#PCDATA)>
+  <!ATTLIST Include
+	Name CDATA #REQUIRED
+	>
+  <!ELEMENT OptionList (Tool*)>
+  <!ELEMENT Tool (Category|Option)*>
+  <!ATTLIST Tool
+	Name CDATA #REQUIRED
+	Disp CDATA #IMPLIED
+	Allow CDATA #IMPLIED
+	Deny CDATA #IMPLIED
+	>
+  <!ELEMENT Category (Option*)>
+  <!ATTLIST Category
+	Name CDATA #REQUIRED
+	Disp CDATA #IMPLIED
+	Allow CDATA #IMPLIED
+	Deny CDATA #IMPLIED
+	>
+  <!ELEMENT Option ANY>
+  <!ATTLIST Option
+	Name CDATA #REQUIRED
+	Disp CDATA #IMPLIED
+	Description CDATA #IMPLIED
+	Type (Text|SplitText|MultiText|List|Select|MultiSelect) #IMPLIED
+	Format CDATA #IMPLIED
+	AllowEmpty (true|false) #IMPLIED
+	Separator CDATA #IMPLIED
+	Browse (None|File|Folder) #IMPLIED
+	Regexp CDATA #IMPLIED
+	Allow CDATA #IMPLIED
+	Deny CDATA #IMPLIED
+	>
+  <!ELEMENT Item (#PCDATA)>
+  <!ATTLIST Item
+	Name CDATA #IMPLIED
+	Disp CDATA #IMPLIED
+	Allow CDATA #IMPLIED
+	Deny CDATA #IMPLIED
+	>
+  <!ELEMENT Localize (Local*)>
+  <!ELEMENT Local (Tool*)>
+  <!ATTLIST Local Name CDATA #REQUIRED>
+  <!ELEMENT OptionValues (Build*)>
+  <!ELEMENT Build (Tool*)>
+  <!ATTLIST Build
+	Name CDATA #REQUIRED
+	Allow CDATA #IMPLIED
+	Deny CDATA #IMPLIED
+	>
+  <!ELEMENT DefaultValues (Tool*)>
+]>
+<Project Platform="Cafe" Version="0.0.8.0" Type="Library">
+  <OptionList>
+    <Tool Name="Compiler">
+      <Category Name="General">
+        <Option Name="Additional include path" Type="MultiText" Format="-I&quot;${value}&quot;" Separator=";" Browse="Folder" />
+      </Category>
+      <Category Name="Optimize">
+        <Option Name="Optimize type" Type="MultiSelect" Separator=" ">
+          <Item Name="none">-Onone</Item>
+          <Item Name="moredebug">-Omoredebug</Item>
+          <Item Name="debug">-Odebug</Item>
+          <Item Name="size">-Osize</Item>
+          <Item Name="general">-Ogeneral</Item>
+          <Item Name="speed">-Ospeed</Item>
+        </Option>
+      </Category>
+      <Category Name="Preprocessor">
+        <Option Name="Preprocessor" Type="MultiText" Format="-D&quot;${value}&quot;" Separator=";" />
+        <Option Name="Disable Preprocessor symbol" Type="MultiText" Format="-U&quot;${value}&quot;" Separator=";" />
+      </Category>
+      <Category Name="Code genaration">
+        <Option Name="CPU" Type="Text" Format="-cpu=${value}" />
+      </Category>
+      <Category Name="Debug">
+        <Option Name="Debugging level" Type="Select">
+          <Item Name="MULTI">-G</Item>
+          <Item Name="Plain">-g</Item>
+          <Item Name="Stack Trace">-gs</Item>
+          <Item Name="None" />
+        </Option>
+        <Option Name="Source root" Type="MultiText" Format="-dbg_source_root &quot;${value}&quot;" Separator=";" Browse="Folder" />
+      </Category>
+      <Category Name="Language">
+        <Option Name="C language dialect" Type="Select">
+          <Item Name="Strict ISO C99">-C99</Item>
+          <Item Name="ISO C99">-c99</Item>
+          <Item Name="Strict ANSI C">-ANSI</Item>
+          <Item Name="ANSI C">-ansi</Item>
+          <Item Name="GNU C">-gcc</Item>
+          <Item Name="K+R C">-k+r</Item>
+        </Option>
+        <Option Name="Cpp language dialect" Type="Select">
+          <Item Name="Standard C++ (Violations Give Errors)">--STD</Item>
+          <Item Name="Standard C++ (Violations Give Warnings)">--std</Item>
+          <Item Name="Standard C++ with ARM">--arm</Item>
+          <Item Name="GNU C++">--g++</Item>
+          <Item Name="Embedded C++">--e</Item>
+          <Item Name="Extended Embedded C++">--ee</Item>
+        </Option>
+        <Option Name="Enable exception handling" Type="Select">
+          <Item Name="On">--exceptions</Item>
+          <Item Name="Off">--no_exceptions</Item>
+        </Option>
+        <Option Name="Kanji" Format="-kanji=${value}" Type="Select">
+          <Item Name="euc">euc</Item>
+          <Item Name="shiftjis">shiftjis</Item>
+          <Item Name="euc/shiftjis">euc/shiftjis</Item>
+          <Item Name="utf8">utf8</Item>
+          <Item Name="none">none</Item>
+        </Option>
+      </Category>
+      <Category Name="Diagnostics">
+        <Option Name="Quit Building if Warnings are Generated" Type="Select">
+          <Item Name="On">--quit_after_warnings</Item>
+          <Item Name="Off" />
+        </Option>
+        <Option Name="Line Wrap Messages" Type="Select">
+          <Item Name="On">--wrap_diagnostics</Item>
+          <Item Name="Off">--no_wrap_diagnostics</Item>
+        </Option>
+      </Category>
+      <Category Name="Advanced">
+        <Option Name="Allocation global variable" Type="Select">
+          <Item Name="Common Data">--commons</Item>
+          <Item Name="Unique Definitions">--no_commons</Item>
+        </Option>
+        <Option Name="SDA" Type="Text" Format="-sda=${value}" />
+        <Option Name="Link-Once template" Type="Select">
+          <Item Name="On">--link_once_templates</Item>
+          <Item Name="Off" />
+        </Option>
+        <Option Name="Max dbo warning" Type="Text" Format="-warn_dbo_not_found_max=${value}" />
+        <Option Name="X switch" Type="MultiText" Format="-X${value}" Separator="," />
+      </Category>
+      <Category Name="Command Line">
+        <Option Name="Additional options" Type="Text" />
+      </Category>
+    </Tool>
+    <Tool Name="Assembler">
+      <Category Name="General">
+        <Option Name="Additional include path" Type="MultiText" Format="-I&quot;${value}&quot;" Separator=";" Browse="Folder" />
+      </Category>
+      <Category Name="Optimize">
+        <Option Name="Optimize type" Type="MultiSelect" Separator=" ">
+          <Item Name="none">-Onone</Item>
+          <Item Name="moredebug">-Omoredebug</Item>
+          <Item Name="debug">-Odebug</Item>
+          <Item Name="size">-Osize</Item>
+          <Item Name="general">-Ogeneral</Item>
+          <Item Name="speed">-Ospeed</Item>
+        </Option>
+      </Category>
+      <Category Name="Preprocessor">
+        <Option Name="Preprocessor" Type="MultiText" Format="-D&quot;${value}&quot;" Separator=";" />
+        <Option Name="Disable Preprocessor symbol" Type="MultiText" Format="-U&quot;${value}&quot;" Separator=";" />
+        <Option Name="Using Preprocessor" Type="Select">
+          <Item Name="On">-preprocess_assembly_files</Item>
+          <Item Name="Off">-no_preprocess_assembly_files</Item>
+        </Option>
+      </Category>
+      <Category Name="Code genaration">
+        <Option Name="CPU" Type="Text" Format="-cpu=${value}" />
+      </Category>
+      <Category Name="Debug">
+        <Option Name="Debugging level" Type="Select">
+          <Item Name="MULTI">-G</Item>
+          <Item Name="Plain">-g</Item>
+          <Item Name="Stack Trace">-gs</Item>
+          <Item Name="None" />
+        </Option>
+        <Option Name="Source root" Type="MultiText" Format="-dbg_source_root &quot;${value}&quot;" Separator=";" Browse="Folder" />
+      </Category>
+      <Category Name="Language">
+        <Option Name="Cpp language dialect" Type="Select">
+          <Item Name="Standard C++ (Violations Give Errors)">--STD</Item>
+          <Item Name="Standard C++ (Violations Give Warnings)">--std</Item>
+          <Item Name="Standard C++ with ARM">--arm</Item>
+          <Item Name="GNU C++">--g++</Item>
+          <Item Name="Embedded C++">--e</Item>
+          <Item Name="Extended Embedded C++">--ee</Item>
+        </Option>
+        <Option Name="Enable exception handling" Type="Select">
+          <Item Name="On">--exceptions</Item>
+          <Item Name="Off">--no_exceptions</Item>
+        </Option>
+      </Category>
+      <Category Name="Advanced">
+        <Option Name="SDA" Type="Text" Format="-sda=${value}" />
+        <Option Name="Link-Once template" Type="Select">
+          <Item Name="On">--link_once_templates</Item>
+          <Item Name="Off" />
+        </Option>
+        <Option Name="Max dbo warning" Type="Text" Format="-warn_dbo_not_found_max=${value}" />
+      </Category>
+      <Category Name="Command Line">
+        <Option Name="Additional options" Type="Text" />
+      </Category>
+    </Tool>
+    <Tool Name="Librarian" Allow="Library">
+      <Category Name="General">
+        <Option Name="Command" Type="Text">
+          <Option Name="Output file" Type="Text" Browse="File" />
+        </Option>
+      </Category>
+      <Category Name="Command Line">
+        <Option Name="Additional options" Type="Text" />
+      </Category>
+    </Tool>
+  </OptionList>
+  <Localize>
+    <Local Name="eng">
+      <Tool Name="Compiler" Disp="Compiler">
+        <Category Name="General" Disp="General">
+          <Option Name="Additional include path" Disp="Additional Include Directories" Description="Specifies one or more directories to add to the include path. Visual Studio Macro can be used. (Example:$(SolutionDir)\include). Use separator ';' to specify more than one. &#xA;(-Ipath)" />
+        </Category>
+        <Category Name="Optimize" Disp="Optimization">
+          <Option Name="Optimize type" Disp="Optimize type" Description="Specify optimization. &#xA;(-Oxxxx[ -Oxxxx...])" />
+        </Category>
+        <Category Name="Preprocessor" Disp="Preprocessor">
+          <Option Name="Preprocessor" Disp="Preprocessor Definitions" Description="Specifies one or more preprocessor defines. Use separator ';' to specify more than one. &#xA;(-Dname)" />
+          <Option Name="Disable Preprocessor symbol" Disp="Undefine Preprocessor Definitions" Description="Specifies one or more preprocessor undefines. Use separator ';' to specify more than one. &#xA;(-Uname)" />
+        </Category>
+        <Category Name="Code genaration" Disp="Code Generation">
+          <Option Name="CPU" Disp="CPU" Description="Generate code for the specified CPU. &#xA;(-cpu=cpu)" />
+        </Category>
+        <Category Name="Debug" Disp="Debugging">
+          <Option Name="Debugging level" Disp="Debugging Level" Description="Specify debugging level. &#xA;(MULTI:-G|Plain:-g|Stack Trace:-gs|None:)" />
+          <Option Name="Source root" Disp="Source Root" Description="Specifies a source root for use by the MULTI Debugger sourceroot command. &#xA;(-dbg_source_root path)" />
+        </Category>
+        <Category Name="Language" Disp="Language">
+          <Option Name="C language dialect" Disp="C Language Dialect" Description="Specify C language dialect. &#xA;(Strict ISO C99:-C99|ISO C99:-c99|Strict ANSI C:-ANSI|ANSI C:-ansi|GNU C:-gcc|K+R C:-k+r)" />
+          <Option Name="Cpp language dialect" Disp="C++ Language Dialect" Description="Specify C++ language dialect. &#xA;(Standard C++ (Violations Give Errors):--STD|Standard C++ (Violations Give Warnings):--std|Standard C++ with ARM:--arm|GNU C++:--g++|Embedded C++:--e|Extended Embedded C++:--ee)" />
+          <Option Name="Enable exception handling" Disp="C++ Exception Handling" Description="Enable C++ exception handling. &#xA;(On:--exceptions, Off:--no_exceptions)" />
+          <Option Name="Kanji" Disp="Kanji Characters" Description="Specify kanji characters. &#xA;(-kanji={euc|shiftjis|euc/shiftjis|none})" />
+        </Category>
+        <Category Name="Diagnostics" Disp="Diagnostics">
+          <Option Name="Quit Building if Warnings are Generated" Disp="Quit Building if Warnings are Generated" Description="Controls whether the build will terminate with an error if any warnings are generated. This option provides the ability to treat all warnings as errors. &#xA;(On:--quit_after_warnings Off:)" />
+          <Option Name="Line Wrap Messages" Disp="Line Wrap Messages" Description="Controls whether diagnostic messages are wrapped when they are too long to fit on a single line. &#xA;(On:--wrap_diagnostics Off:--no_wrap_diagnostics)" />
+        </Category>
+        <Category Name="Advanced" Disp="Advanced">
+          <Option Name="Allocation global variable" Disp="Allocation of Uninitialized Global Variables" Description="Controls the allocation of uninitialized global variables.&#xA;(Common Data:--commons, Unique Definitions:--no_commons)" />
+          <Option Name="SDA" Disp="Small Data Areas Using a Threshold" Description="Assigning data to small data areas using a threshold. &#xA;(-sda={none|0|n|all})" />
+          <Option Name="Link-Once template" Disp="Link-Once Template Instantiation" Description="Specify Link-Once template instantiation. &#xA;(On:--link_once_templates, Off:)" />
+          <Option Name="Max dbo warning" Disp="Maximum DBO Not Found Warnings" Description="Set maximum dbo not found warnings. &#xA;(-warn_dbo_not_found_max=num)" />
+          <Option Name="X switch" Disp="Internal Compiler Switches" Description="Specify internal compiler switches. Use separator ',' to specify more than one. &#xA;(-Xnum)" />
+        </Category>
+        <Category Name="Command Line" Disp="Command Line">
+          <Option Name="Additional options" Disp="Additional options" Description="Specify additional options." />
+        </Category>
+      </Tool>
+      <Tool Name="Assembler" Disp="Assembler">
+        <Category Name="General" Disp="General">
+          <Option Name="Additional include path" Disp="Additional Include Directories" Description="Specifies one or more directories to add to the include path. Visual Studio Macro can be used. (Example:$(SolutionDir)\include). Use separator ';' to specify more than one. &#xA;(-Ipath)" />
+        </Category>
+        <Category Name="Optimize" Disp="Optimization">
+          <Option Name="Optimize type" Disp="Optimize type" Description="Specify optimization. &#xA;(-Oxxxx[ -Oxxxx...])" />
+        </Category>
+        <Category Name="Preprocessor" Disp="Preprocessor">
+          <Option Name="Preprocessor" Disp="Preprocessor Definitions" Description="Specifies one or more preprocessor defines. Use separator ';' to specify more than one. &#xA;(-Dname)" />
+          <Option Name="Disable Preprocessor symbol" Disp="Undefine Preprocessor Definitions" Description="Specifies one or more preprocessor undefines. Use separator ';' to specify more than one. &#xA;(-Uname)" />
+          <Option Name="Using Preprocessor" Disp="Using the Preprocessor" Description="Instructs the assembler to call preprocessor the input file before assembling it. &#xA;(On:-preprocess_assembly_files, Off:-no_preprocess_assembly_files)" />
+        </Category>
+        <Category Name="Code genaration" Disp="Code Generation">
+          <Option Name="CPU" Disp="CPU" Description="Generate code for the specified CPU. &#xA;(-cpu=cpu)" />
+        </Category>
+        <Category Name="Debug" Disp="Debugging">
+          <Option Name="Debugging level" Disp="Debugging Level" Description="Specify debugging level. &#xA;(MULTI:-G|Plain:-g|Stack Trace:-gs|None:)" />
+          <Option Name="Source root" Disp="Source Root" Description="Specifies a source root for use by the MULTI Debugger sourceroot command. &#xA;(-dbg_source_root path)" />
+        </Category>
+        <Category Name="Language" Disp="Language">
+          <Option Name="Cpp language dialect" Disp="C++ Language Dialect" Description="Specify C++ language dialect. &#xA;(Standard C++ (Violations Give Errors):--STD|Standard C++ (Violations Give Warnings):--std|Standard C++ with ARM:--arm|GNU C++:--g++|Embedded C++:--e|Extended Embedded C++:--ee)" />
+          <Option Name="Enable exception handling" Disp="C++ Exception Handling" Description="Enable C++ exception handling. &#xA;(On:--exceptions, Off:--no_exceptions)" />
+        </Category>
+        <Category Name="Advanced" Disp="Advanced">
+          <Option Name="SDA" Disp="Small Data Areas Using a Threshold" Description="Assigning data to small data areas using a threshold. &#xA;(-sda={none|0|n|all})" />
+          <Option Name="Link-Once template" Disp="Link-Once Template Instantiation" Description="Specify Link-Once template instantiation. &#xA;(On:--link_once_templates, Off:)" />
+          <Option Name="Max dbo warning" Disp="Maximum DBO Not Found Warnings" Description="Set maximum dbo not found warnings. &#xA;(-warn_dbo_not_found_max=num)" />
+        </Category>
+        <Category Name="Command Line" Disp="Command Line">
+          <Option Name="Additional options" Disp="Additional options" Description="Specify additional options." />
+        </Category>
+      </Tool>
+      <Tool Name="Librarian" Disp="Librarian" Allow="Library">
+        <Category Name="General" Disp="General">
+          <Option Name="Command" Disp="Librarian Command" Description="Specify librarian command." />
+          <Option Name="Output file" Disp="Output File" Description="Specify output file." />
+        </Category>
+        <Category Name="Command Line" Disp="Command Line">
+          <Option Name="Additional options" Disp="Additional options" Description="Specify additional options." />
+        </Category>
+      </Tool>
+    </Local>
+    <Local Name="jpn">
+      <Tool Name="Compiler" Disp="コンパイラ">
+        <Category Name="General" Disp="全般">
+          <Option Name="Additional include path" Disp="追加のインクルード ディレクトリ" Description="インクルード パスに追加するディレクトリを指定します。Visual Studio マクロを使用することができます(例:$(SolutionDir)\include)。区切り文字';'を使用して複数指定できます。&#xA;(-Ipath)" />
+        </Category>
+        <Category Name="Optimize" Disp="最適化">
+          <Option Name="Optimize type" Disp="最適化" Description="最適化を指定します。&#xA;(-Oxxxx[ -Oxxxx...])" />
+        </Category>
+        <Category Name="Preprocessor" Disp="プリプロセッサ">
+          <Option Name="Preprocessor" Disp="プリプロセッサの定義" Description="プリプロセッサを定義します。区切り文字';'を使用して複数指定できます。&#xA;(-Dname)" />
+          <Option Name="Disable Preprocessor symbol" Disp="指定したプリプロセッサ定義の無効化" Description="特定のプリプロセッサの定義を無効にします。区切り文字';'を使用して複数指定できます。&#xA;(-Uname)" />
+        </Category>
+        <Category Name="Code genaration" Disp="コード生成">
+          <Option Name="CPU" Disp="CPU" Description="指定したCPUのコードを生成します。&#xA;(-cpu=cpu)" />
+        </Category>
+        <Category Name="Debug" Disp="デバッグ">
+          <Option Name="Debugging level" Disp="デバッグレベル" Description="デバッグレベルを指定します。&#xA;(MULTI:-G|Plain:-g|Stack Trace:-gs|None:)" />
+          <Option Name="Source root" Disp="ソースルート" Description="MULTIデバッガのsourcerootコマンドによって使用されるソース・ルートを指定します。&#xA;(-dbg_source_root path)" />
+        </Category>
+        <Category Name="Language" Disp="言語">
+          <Option Name="C language dialect" Disp="C言語の規格" Description="C言語の規格を指定します。&#xA;(Strict ISO C99:-C99|ISO C99:-c99|Strict ANSI C:-ANSI|ANSI C:-ansi|GNU C:-gcc|K+R C:-k+r)" />
+          <Option Name="Cpp language dialect" Disp="C++言語の規格" Description="C++言語の規格を指定します。&#xA;(Standard C++ (Violations Give Errors):--STD|Standard C++ (Violations Give Warnings):--std|Standard C++ with ARM:--arm|GNU C++:--g++|Embedded C++:--e|Extended Embedded C++:--ee)" />
+          <Option Name="Enable exception handling" Disp="C++例外処理" Description="C++例外処理を有効にします。&#xA;(On:--exceptions, Off:--no_exceptions)" />
+          <Option Name="Kanji" Disp="漢字" Description="漢字文字を指定します。&#xA;(-kanji={euc|shiftjis|euc/shiftjis|none})" />
+        </Category>
+        <Category Name="Diagnostics" Disp="診断">
+          <Option Name="Quit Building if Warnings are Generated" Disp="警告生成時にビルドを終了" Description="警告の生成によって構築を中止するかどうかを制御します。&#xA;(On:--quit_after_warnings Off:)" />
+          <Option Name="Line Wrap Messages" Disp="エラーメッセージをラップする" Description="1行に入りきらないほど長いエラー・メッセージ・テキストがラップされないようにするモードを制御します。&#xA;(On:--wrap_diagnostics Off:--no_wrap_diagnostics" />
+        </Category>
+        <Category Name="Advanced" Disp="詳細">
+          <Option Name="Allocation global variable" Disp="初期化されていないグローバル変数の割り当て" Description="初期化されていないグローバル変数の割り当てを制御します。&#xA;(Common Data:--commons, Unique Definitions:--no_commons)" />
+          <Option Name="SDA" Disp="スモール・データ領域による最適化" Description="一定のサイズまでのデータをスモール・データ領域に置くよう指定します。&#xA;(-sda={none|0|n|all})" />
+          <Option Name="Link-Once template" Disp="リンクワンス・メソッド" Description="非エクスポート・テンプレートのインスタンスを生成するリンクワンス・メソッドを制御します。&#xA;(On:--link_once_templates, Off:)" />
+          <Option Name="Max dbo warning" Disp="DBO Not Found 警告の最大値" Description="DBO Not Found 警告の最大値を設定します。&#xA;(-warn_dbo_not_found_max=num)" />
+          <Option Name="X switch" Disp="コンパイラ内部スイッチ" Description="コンパイラ内部スイッチを指定します。区切り文字','を使用して複数指定できます。&#xA;(-Xnum)" />
+        </Category>
+        <Category Name="Command Line" Disp="コマンドライン">
+          <Option Name="Additional options" Disp="追加のオプション" Description="追加のオプションを指定します。" />
+        </Category>
+      </Tool>
+      <Tool Name="Assembler" Disp="アセンブラ">
+        <Category Name="General" Disp="全般">
+          <Option Name="Additional include path" Disp="追加のインクルード ディレクトリ" Description="インクルード パスに追加するディレクトリを指定します。Visual Studio マクロを使用することができます(例:$(SolutionDir)\include)。区切り文字';'を使用して複数指定できます。&#xA;(-Ipath)" />
+        </Category>
+        <Category Name="Optimize" Disp="最適化">
+          <Option Name="Optimize type" Disp="最適化" Description="最適化を指定します。&#xA;(-Oxxxx[ -Oxxxx...])" />
+        </Category>
+        <Category Name="Preprocessor" Disp="プリプロセッサ">
+          <Option Name="Preprocessor" Disp="プリプロセッサの定義" Description="プリプロセッサを定義します。区切り文字';'を使用して複数指定できます。&#xA;(-Dname)" />
+          <Option Name="Disable Preprocessor symbol" Disp="指定したプリプロセッサ定義の無効化" Description="特定のプリプロセッサの定義を無効にします。区切り文字';'を使用して複数指定できます。&#xA;(-Uname)" />
+          <Option Name="Using Preprocessor" Disp="プリプロセッサを使用" Description="入力ファイルを前処理してからアセンブルするためにプリプロセッサを呼び出すようアセンブラに指示します。&#xA;(On:-preprocess_assembly_files, Off:-no_preprocess_assembly_files)" />
+        </Category>
+        <Category Name="Code genaration" Disp="コード生成">
+          <Option Name="CPU" Disp="CPU" Description="指定したCPUのコードを生成します。&#xA;(-cpu=cpu)" />
+        </Category>
+        <Category Name="Debug" Disp="デバッグ">
+          <Option Name="Debugging level" Disp="デバッグレベル" Description="デバッグレベルを指定します。&#xA;(MULTI:-G|Plain:-g|Stack Trace:-gs|None:)" />
+          <Option Name="Source root" Disp="ソースルート" Description="MULTIデバッガのsourcerootコマンドによって使用されるソース・ルートを指定します。&#xA;(-dbg_source_root path)" />
+        </Category>
+        <Category Name="Language" Disp="言語">
+          <Option Name="Cpp language dialect" Disp="C++言語の規格" Description="C++言語の規格を指定します。&#xA;(Standard C++ (Violations Give Errors):--STD|Standard C++ (Violations Give Warnings):--std|Standard C++ with ARM:--arm|GNU C++:--g++|Embedded C++:--e|Extended Embedded C++:--ee)" />
+          <Option Name="Enable exception handling" Disp="C++例外処理" Description="C++例外処理を有効にします。&#xA;(On:--exceptions, Off:--no_exceptions)" />
+        </Category>
+        <Category Name="Advanced" Disp="詳細">
+          <Option Name="SDA" Disp="スモール・データ領域による最適化" Description="一定のサイズまでのデータをスモール・データ領域に置くよう指定します。&#xA;(-sda={none|0|n|all})" />
+          <Option Name="Link-Once template" Disp="リンクワンス・メソッド" Description="非エクスポート・テンプレートのインスタンスを生成するリンクワンス・メソッドを制御します。&#xA;(On:--link_once_templates, Off:)" />
+          <Option Name="Max dbo warning" Disp="DBO Not Found 警告の最大値" Description="DBO Not Found 警告の最大値を設定します。&#xA;(-warn_dbo_not_found_max=num)" />
+        </Category>
+        <Category Name="Command Line" Disp="コマンドライン">
+          <Option Name="Additional options" Disp="追加のオプション" Description="追加のオプションを指定します。" />
+        </Category>
+      </Tool>
+      <Tool Name="Librarian" Disp="ライブラリアン" Allow="Library">
+        <Category Name="General" Disp="全般">
+          <Option Name="Command" Disp="ライブラリアン・コマンド" Description="ライブラリアン・コマンドを指定します。" />
+          <Option Name="Output file" Disp="出力ファイル" Description="出力ファイルを指定します。" />
+        </Category>
+        <Category Name="Command Line" Disp="コマンドライン">
+          <Option Name="Additional options" Disp="追加のオプション" Description="追加のオプションを指定します。" />
+        </Category>
+      </Tool>
+    </Local>
+  </Localize>
+  <OptionValues>
+    <Build Name="Cafe Debug">
+      <Tool Name="Compiler">
+        <Option Name="Additional include path">.;$(CAFE_ROOT)\system\include;C:\Users\davem\Desktop\wiiu\source;C:\Users\davem\Desktop\wiiu\source\wiiu</Option>
+        <Option Name="Optimize type">general</Option>
+        <Option Name="Preprocessor">_DEBUG;NDEV=1;CAFE=2;PLATFORM=CAFE;EPPC;DEBUG=1;BUILDING_GRANNY_STATIC=1</Option>
+        <Option Name="Disable Preprocessor symbol">
+        </Option>
+        <Option Name="CPU">espresso</Option>
+        <Option Name="Debugging level">MULTI</Option>
+        <Option Name="Source root">.</Option>
+        <Option Name="C language dialect">GNU C</Option>
+        <Option Name="Cpp language dialect">GNU C++</Option>
+        <Option Name="Enable exception handling">Off</Option>
+        <Option Name="Kanji">shiftjis</Option>
+        <Option Name="Allocation global variable">Unique Definitions</Option>
+        <Option Name="SDA">none</Option>
+        <Option Name="Link-Once template">Off</Option>
+        <Option Name="Max dbo warning" />
+        <Option Name="X switch">332</Option>
+        <Option Name="Quit Building if Warnings are Generated">Off</Option>
+        <Option Name="Line Wrap Messages">Off</Option>
+        <Option Name="Additional options">--diag_suppress=1931 --diag_suppress=128</Option>
+        <Option Name="Max dbo warning">0</Option>
+      </Tool>
+      <Tool Name="Assembler">
+        <Option Name="Additional include path">.;$(CAFE_ROOT)\system\include</Option>
+        <Option Name="Optimize type">general</Option>
+        <Option Name="Preprocessor">_DEBUG;NDEV=1;CAFE=2;PLATFORM=CAFE;EPPC</Option>
+        <Option Name="Disable Preprocessor symbol">__cplusplus</Option>
+        <Option Name="Using Preprocessor">On</Option>
+        <Option Name="CPU">espresso</Option>
+        <Option Name="Debugging level">MULTI</Option>
+        <Option Name="Source root">.</Option>
+        <Option Name="Cpp language dialect">GNU C++</Option>
+        <Option Name="Enable exception handling">Off</Option>
+        <Option Name="SDA">none</Option>
+        <Option Name="Link-Once template">Off</Option>
+        <Option Name="Max dbo warning" />
+        <Option Name="Additional options" />
+      </Tool>
+      <Tool Name="Librarian" Allow="Library">
+        <Option Name="Command">-rcm</Option>
+        <Option Name="Output file">$(OutDir)\$(ProjectName).a</Option>
+        <Option Name="Additional options" />
+      </Tool>
+    </Build>
+    <Build Name="Cafe Release">
+      <Tool Name="Compiler">
+        <Option Name="Additional include path">.;$(CAFE_ROOT)\system\include;C:\Users\davem\Desktop\wiiu\source;C:\Users\davem\Desktop\wiiu\source\wiiu</Option>
+        <Option Name="Optimize type">general</Option>
+        <Option Name="Preprocessor">NDEBUG;NDEV=1;CAFE=2;PLATFORM=CAFE;EPPC;BUILDING_GRANNY_STATIC=1</Option>
+        <Option Name="Disable Preprocessor symbol">
+        </Option>
+        <Option Name="CPU">espresso</Option>
+        <Option Name="Debugging level">MULTI</Option>
+        <Option Name="Source root">.</Option>
+        <Option Name="C language dialect">ISO C99</Option>
+        <Option Name="Cpp language dialect">GNU C++</Option>
+        <Option Name="Enable exception handling">Off</Option>
+        <Option Name="Kanji">shiftjis</Option>
+        <Option Name="Allocation global variable">Unique Definitions</Option>
+        <Option Name="SDA">none</Option>
+        <Option Name="Link-Once template">Off</Option>
+        <Option Name="Max dbo warning" />
+        <Option Name="X switch">332</Option>
+        <Option Name="Quit Building if Warnings are Generated">Off</Option>
+        <Option Name="Line Wrap Messages">Off</Option>
+        <Option Name="Additional options">--diag_suppress=1931 --diag_suppress=128</Option>
+        <Option Name="Max dbo warning">0</Option>
+      </Tool>
+      <Tool Name="Assembler">
+        <Option Name="Additional include path">.;$(CAFE_ROOT)\system\include</Option>
+        <Option Name="Optimize type">general</Option>
+        <Option Name="Preprocessor">NDEBUG;NDEV=1;CAFE=2;PLATFORM=CAFE;EPPC</Option>
+        <Option Name="Disable Preprocessor symbol">__cplusplus</Option>
+        <Option Name="Using Preprocessor">On</Option>
+        <Option Name="CPU">espresso</Option>
+        <Option Name="Debugging level">MULTI</Option>
+        <Option Name="Source root">.</Option>
+        <Option Name="Cpp language dialect">GNU C++</Option>
+        <Option Name="Enable exception handling">Off</Option>
+        <Option Name="SDA">none</Option>
+        <Option Name="Link-Once template">Off</Option>
+        <Option Name="Max dbo warning" />
+        <Option Name="Additional options" />
+      </Tool>
+      <Tool Name="Librarian" Allow="Library">
+        <Option Name="Command">-rcm</Option>
+        <Option Name="Output file">$(OutDir)\$(ProjectName).a</Option>
+        <Option Name="Additional options" />
+      </Tool>
+    </Build>
+  </OptionValues>
+  <DefaultValues>
+    <Tool Name="Compiler">
+      <Option Name="Additional include path">.;$(CAFE_ROOT)\system\include</Option>
+      <Option Name="Optimize type">general</Option>
+      <Option Name="Preprocessor" />
+      <Option Name="Disable Preprocessor symbol" />
+      <Option Name="CPU">espresso</Option>
+      <Option Name="Debugging level">MULTI</Option>
+      <Option Name="Source root">$(CAFE_ROOT)\system</Option>
+      <Option Name="C language dialect">ISO C99</Option>
+      <Option Name="Cpp language dialect">GNU C++</Option>
+      <Option Name="Enable exception handling">Off</Option>
+      <Option Name="Kanji">shiftjis</Option>
+      <Option Name="Allocation global variable">Unique Definitions</Option>
+      <Option Name="SDA">none</Option>
+      <Option Name="Link-Once template">Off</Option>
+      <Option Name="Max dbo warning" />
+      <Option Name="X switch" />
+      <Option Name="Quit Building if Warnings are Generated">Off</Option>
+      <Option Name="Line Wrap Messages">On</Option>
+      <Option Name="Additional options" />
+      <Option Name="Max dbo warning">0</Option>
+    </Tool>
+    <Tool Name="Assembler">
+      <Option Name="Additional include path">.;$(CAFE_ROOT)\system\include</Option>
+      <Option Name="Optimize type">general</Option>
+      <Option Name="Preprocessor" />
+      <Option Name="Disable Preprocessor symbol" />
+      <Option Name="Using Preprocessor">On</Option>
+      <Option Name="CPU">espresso</Option>
+      <Option Name="Debugging level">MULTI</Option>
+      <Option Name="Source root">.</Option>
+      <Option Name="Cpp language dialect">GNU C++</Option>
+      <Option Name="Enable exception handling">Off</Option>
+      <Option Name="SDA">none</Option>
+      <Option Name="Link-Once template">Off</Option>
+      <Option Name="Max dbo warning" />
+      <Option Name="Additional options" />
+    </Tool>
+    <Tool Name="Librarian" Allow="Library">
+      <Option Name="Command">-rcm</Option>
+      <Option Name="Output file">$(OutDir)\$(ProjectName).a</Option>
+      <Option Name="Additional options" />
+    </Tool>
+  </DefaultValues>
+</Project>

@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5C5B12B5-C4D6-455C-8D77-391868837CC8}</ProjectGuid>
+    <RootNamespace>preprocessor</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)..\bin\win32</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\include;..\gstate;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\ActiveQt;$(QTDIR)\include;$(QTDIR)\mkspecs\win32-msvc2005;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_HAS_EXCEPTIONS=0;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;COMPILING_PREPROCESSOR;BUILDING_GRANNY_STATIC=1;QT_DLL;QT_NO_DEBUG;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;QT_LARGEFILE_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>winmm.lib;granny2_static.lib;$(QTDIR)\lib\QtXml4.lib;$(QTDIR)\lib\QtCore4.lib;gstate.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)../../bin/win32/preprocessor.exe</OutputFile>
+      <AdditionalLibraryDirectories>..\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)preprocessor.pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>..\include;..\gstate;$(QTDIR)\include\QtXml;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\ActiveQt;$(QTDIR)\include;$(QTDIR)\mkspecs\win32-msvc2005;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_HAS_EXCEPTIONS=0;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;COMPILING_PREPROCESSOR;BUILDING_GRANNY_STATIC=1;QT_DLL;QT_NO_DEBUG;QT_GUI_LIB;QT_CORE_LIB;QT_THREAD_SUPPORT;QT_LARGEFILE_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>granny2_static.lib;winmm.lib;$(QTDIR)\lib\QtXml4.lib;$(QTDIR)\lib\QtCore4.lib;gstate.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(TargetDir)$(TargetFileName)</OutputFile>
+      <AdditionalLibraryDirectories>..\lib\win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+      <LinkTimeCodeGeneration>PGUpdate</LinkTimeCodeGeneration>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="add_texture.cpp" />
+    <ClCompile Include="bind_meshes.cpp" />
+    <ClCompile Include="bones_per_mesh.cpp" />
+    <ClCompile Include="clean_materials.cpp" />
+    <ClCompile Include="combine_elements.cpp" />
+    <ClCompile Include="samples\combine_rigid_meshes.cpp" />
+    <ClCompile Include="create_file_db.cpp" />
+    <ClCompile Include="example_set_vertformat.cpp" />
+    <ClCompile Include="generate_mipmaps.cpp" />
+    <ClCompile Include="generate_tangents.cpp" />
+    <ClCompile Include="granny_file_database.cpp" />
+    <ClCompile Include="kill_uncommon_data.cpp" />
+    <ClCompile Include="lod_calc.cpp" />
+    <ClCompile Include="make_spu_animation_info.cpp" />
+    <ClCompile Include="make_string_database.cpp" />
+    <ClCompile Include="mesh_indices_16bit.cpp" />
+    <ClCompile Include="platform_convert.cpp" />
+    <ClCompile Include="preprocessor.cpp" />
+    <ClCompile Include="rebase_texture_files.cpp" />
+    <ClCompile Include="remove_elements.cpp" />
+    <ClCompile Include="remove_namespace.cpp" />
+    <ClCompile Include="remove_text_tracks.cpp" />
+    <ClCompile Include="remove_unchanging_tracks.cpp" />
+    <ClCompile Include="remove_vector_tracks.cpp" />
+    <ClCompile Include="rename_element.cpp" />
+    <ClCompile Include="resection_file.cpp" />
+    <ClCompile Include="run_batch.cpp" />
+    <ClCompile Include="samples\compress_vert_sample_wii.cpp" />
+    <ClCompile Include="set_compression.cpp" />
+    <ClCompile Include="set_file_alignment.cpp" />
+    <ClCompile Include="set_internal_alignment.cpp" />
+    <ClCompile Include="stb_image.c" />
+    <ClCompile Include="threshold_vector_track.cpp" />
+    <ClCompile Include="touch_version.cpp" />
+    <ClCompile Include="transform_file.cpp" />
+    <ClCompile Include="utilities.cpp" />
+    <ClCompile Include="vertex_cache_optimize.cpp" />
+    <ClCompile Include="warn_crc_mismatch.cpp" />
+    <ClCompile Include="warn_scale_shear.cpp" />
+    <ClCompile Include="wf_utilities.cpp" />
+    <ClCompile Include="wfMode.cpp" />
+    <ClCompile Include="samples\16bit_texture.cpp" />
+    <ClCompile Include="samples\bounds_calc.cpp" />
+    <ClCompile Include="samples\compress_vert_sample.cpp" />
+    <ClCompile Include="samples\decompress_textures.cpp" />
+    <ClCompile Include="samples\dump_mesh_texture.cpp" />
+    <ClCompile Include="samples\filter_vector_tracks.cpp" />
+    <ClCompile Include="samples\merge_rigid_meshes.cpp" />
+    <ClCompile Include="samples\merge_skinned_meshes.cpp" />
+    <ClCompile Include="samples\merge_track_groups.cpp" />
+    <ClCompile Include="samples\model_mesh_bounds.cpp" />
+    <ClCompile Include="samples\move_meshes_to_origin.cpp" />
+    <ClCompile Include="samples\obj_importer.cpp" />
+    <ClCompile Include="samples\override_skeleton_lod.cpp" />
+    <ClCompile Include="samples\recompress_anims_sample.cpp" />
+    <ClCompile Include="samples\remove_unbound_transform_tracks.cpp" />
+    <ClCompile Include="samples\strip_images.cpp" />
+    <ClCompile Include="samples\trans_bounds.cpp" />
+    <ClCompile Include="samples\write_raw_file.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="make_spu_animation_info.h" />
+    <ClInclude Include="preprocessor.h" />
+    <ClInclude Include="utilities.h" />
+    <ClInclude Include="wf_utilities.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Readme.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
