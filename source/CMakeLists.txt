@@ -1,3 +1,5 @@
+# Cmake Project Author: FINALZ
+
 cmake_minimum_required(VERSION 4.2.0)
 
 # Project Name
@@ -235,4 +237,5 @@ target_compile_definitions(${PROJECT_NAME}
   BUILDING_GRANNY_STATIC=1
   RAD_NO_LOWERCASE_TYPES=0
   _HAS_ITERATOR_DEBUGGING=0
+
 )
