@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 4.2.0)
 # Project Name
 project(granny2_static
 DESCRIPTION "Granny2 Static Library for x86/x64"
-VERSION "1.0.0")
+VERSION "2.9.12.0")
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -239,3 +239,4 @@ target_compile_definitions(${PROJECT_NAME}
   _HAS_ITERATOR_DEBUGGING=0
 
 )
+
